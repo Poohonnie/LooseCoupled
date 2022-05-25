@@ -2,8 +2,8 @@
 // Created by Zing Fong on 2022/5/25.
 //
 
-#ifndef LOOSECOUPLED_GNSS_SPP_H
-#define LOOSECOUPLED_GNSS_SPP_H
+#ifndef LOOSECOUPLED_SRC_GNSSTK_GNSS_SPP_H
+#define LOOSECOUPLED_SRC_GNSSTK_GNSS_SPP_H
 
 
 class GnssSpp
@@ -12,4 +12,4 @@ class GnssSpp
 };
 
 
-#endif //LOOSECOUPLED_GNSS_SPP_H
+#endif //LOOSECOUPLED_SRC_GNSSTK_GNSS_SPP_H

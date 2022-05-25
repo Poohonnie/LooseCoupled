@@ -2,8 +2,8 @@
 // Created by Zing Fong on 2022/5/25.
 //
 
-#ifndef LOOSECOUPLED_BASE_EARTH_H
-#define LOOSECOUPLED_BASE_EARTH_H
+#ifndef LOOSECOUPLED_SRC_BASETK_BASE_EARTH_H
+#define LOOSECOUPLED_SRC_BASETK_BASE_EARTH_H
 
 
 class BaseEarth
@@ -12,4 +12,4 @@ class BaseEarth
 };
 
 
-#endif //LOOSECOUPLED_BASE_EARTH_H
+#endif //LOOSECOUPLED_SRC_BASETK_BASE_EARTH_H
