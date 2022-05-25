@@ -1,0 +1,4 @@
+C:\Users\Zing\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\221.5591.52\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Users/Zing/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/221.5591.52/bin/ninja/win/ninja.exe -G Ninja -S C:\Users\Zing\CLionProjects\LooseCoupled -B C:\Users\Zing\CLionProjects\LooseCoupled\cmake-build-debug
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/Zing/CLionProjects/LooseCoupled/cmake-build-debug
