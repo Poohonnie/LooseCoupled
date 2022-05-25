@@ -1,10 +1,4 @@
 # ninja log v5
 0	210	6751504811810412	CMakeFiles/LooseCoupled.dir/test.cc.obj	81ea504d3dcc157f
-27	575	6751504815372934	CMakeFiles/LooseCoupled.dir/main.cpp.obj	e9f371362e18cfda
-578	818	6751504817716452	LooseCoupled.exe	200259428600d49
-4	397	6751505862462335	CMakeFiles/LooseCoupled.dir/main.cpp.obj	e9f371362e18cfda
-398	574	6751505864024074	LooseCoupled.exe	200259428600d49
-3	401	6751506121057887	CMakeFiles/LooseCoupled.dir/main.cpp.obj	e9f371362e18cfda
-401	584	6751506122776236	LooseCoupled.exe	200259428600d49
 5	412	6751507616685998	CMakeFiles/LooseCoupled.dir/main.cpp.obj	e9f371362e18cfda
 413	595	6751507618273823	LooseCoupled.exe	200259428600d49

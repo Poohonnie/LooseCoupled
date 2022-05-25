@@ -49,17 +49,17 @@ cmake_ninja_workdir = C$:/Users/Zing/CLionProjects/LooseCoupled/cmake-build-debu
 
 build cmake_object_order_depends_target_LooseCoupled: phony || CMakeFiles/LooseCoupled.dir
 
-build CMakeFiles/LooseCoupled.dir/main.cpp.obj: CXX_COMPILER__LooseCoupled_Debug C$:/Users/Zing/CLionProjects/LooseCoupled/main.cpp || cmake_object_order_depends_target_LooseCoupled
-  DEP_FILE = CMakeFiles\LooseCoupled.dir\main.cpp.obj.d
+build CMakeFiles/LooseCoupled.dir/src/main.cc.obj: CXX_COMPILER__LooseCoupled_Debug C$:/Users/Zing/CLionProjects/LooseCoupled/src/main.cc || cmake_object_order_depends_target_LooseCoupled
+  DEP_FILE = CMakeFiles\LooseCoupled.dir\src\main.cc.obj.d
   FLAGS = -g -std=gnu++14
   OBJECT_DIR = CMakeFiles\LooseCoupled.dir
-  OBJECT_FILE_DIR = CMakeFiles\LooseCoupled.dir
+  OBJECT_FILE_DIR = CMakeFiles\LooseCoupled.dir\src
 
-build CMakeFiles/LooseCoupled.dir/test.cc.obj: CXX_COMPILER__LooseCoupled_Debug C$:/Users/Zing/CLionProjects/LooseCoupled/test.cc || cmake_object_order_depends_target_LooseCoupled
-  DEP_FILE = CMakeFiles\LooseCoupled.dir\test.cc.obj.d
+build CMakeFiles/LooseCoupled.dir/src/basetk/base_matrix.cc.obj: CXX_COMPILER__LooseCoupled_Debug C$:/Users/Zing/CLionProjects/LooseCoupled/src/basetk/base_matrix.cc || cmake_object_order_depends_target_LooseCoupled
+  DEP_FILE = CMakeFiles\LooseCoupled.dir\src\basetk\base_matrix.cc.obj.d
   FLAGS = -g -std=gnu++14
   OBJECT_DIR = CMakeFiles\LooseCoupled.dir
-  OBJECT_FILE_DIR = CMakeFiles\LooseCoupled.dir
+  OBJECT_FILE_DIR = CMakeFiles\LooseCoupled.dir\src\basetk
 
 
 # =============================================================================
@@ -69,7 +69,7 @@ build CMakeFiles/LooseCoupled.dir/test.cc.obj: CXX_COMPILER__LooseCoupled_Debug 
 #############################################
 # Link the executable LooseCoupled.exe
 
-build LooseCoupled.exe: CXX_EXECUTABLE_LINKER__LooseCoupled_Debug CMakeFiles/LooseCoupled.dir/main.cpp.obj CMakeFiles/LooseCoupled.dir/test.cc.obj
+build LooseCoupled.exe: CXX_EXECUTABLE_LINKER__LooseCoupled_Debug CMakeFiles/LooseCoupled.dir/src/main.cc.obj CMakeFiles/LooseCoupled.dir/src/basetk/base_matrix.cc.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\LooseCoupled.dir

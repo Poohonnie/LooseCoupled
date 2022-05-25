@@ -3,4 +3,6 @@ project(LooseCoupled)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(LooseCoupled main.cpp test.cc test.h)
+add_executable(LooseCoupled
+        src/main.cc
+        src/basetk/base_matrix.cc src/basetk/base_matrix.h)
