@@ -36,10 +36,12 @@ struct MjdTime
 class GpsTime
 {
 public:
-    int week{};  // GPS周
-    double sec_of_week{};  // GPS周秒
+    int week_{};  // GPS周
+    double sec_of_week_{};  // GPS周秒
     
-    
+    void normalize();  // 标准化, 即周内秒在[0, 604800)范围内
+    double operator-(const GpsTime &subtrahend) const;  // 两个GpsTime的时间间隔(s)
+    GpsTime operator-(const double &subtrahend) const;  // GpsTime减去一定秒数
 };
 
 class BdsTime : public GpsTime
@@ -48,7 +50,26 @@ class BdsTime : public GpsTime
 class BaseTime
 {
 public:
-
+    double GpstimeSub(const double &t, const double toc);  // 两个GPS周内秒的减法, 用于获取tk
+    double CommonTime2UT(const CommonTime &common_time);  // 通用时转世界时
+    
+    MjdTime CommonTime2MjdTime(const CommonTime &common_time);  // 通用时转简化儒略日
+    CommonTime MjdTime2CommonTime(const MjdTime &mjd_time);  // 简化儒略日转通用时
+    
+    GpsTime MjdTime2GpsTime(const MjdTime &mjd_time);  // 简化儒略日转GPS时
+    MjdTime GpsTime2MjdTime(const GpsTime &gps_time);  // GPS时转简化儒略日
+    
+    GpsTime CommonTime2GpsTime(const CommonTime &common_time);  // 通用时转GPS时
+    CommonTime GpsTime2CommonTime(const GpsTime &gps_time);  // GPS时转通用时
+    
+    BdsTime GpsTime2BdsTime(const GpsTime &gps_time);  // GPS时 转 BDS时
+    GpsTime BdsTime2GpsTime(const BdsTime &bds_time);  // BDS时 转 GPS时
+    
+    BdsTime MjdTime2BdsTime(const MjdTime &mjd_time);  // 简化儒略日转BDS时
+    MjdTime BdsTime2MjdTime(const BdsTime &bds_time);  // BDS时转简化儒略日
+    
+    BdsTime CommonTime2BdsTime(const CommonTime &common_time);  // 通用时转BDS时
+    CommonTime BdsTime2CommonTime(const BdsTime &bds_time);  // BDS时转通用时
 };
 
 
