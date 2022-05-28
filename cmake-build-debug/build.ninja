@@ -79,12 +79,6 @@ build CMakeFiles/LooseCoupled.dir/src/basetk/base_math.cc.obj: CXX_COMPILER__Loo
   OBJECT_DIR = CMakeFiles\LooseCoupled.dir
   OBJECT_FILE_DIR = CMakeFiles\LooseCoupled.dir\src\basetk
 
-build CMakeFiles/LooseCoupled.dir/src/basetk/base_earth.cc.obj: CXX_COMPILER__LooseCoupled_Debug C$:/Users/Zing/CLionProjects/LooseCoupled/src/basetk/base_earth.cc || cmake_object_order_depends_target_LooseCoupled
-  DEP_FILE = CMakeFiles\LooseCoupled.dir\src\basetk\base_earth.cc.obj.d
-  FLAGS = -g -std=gnu++14
-  OBJECT_DIR = CMakeFiles\LooseCoupled.dir
-  OBJECT_FILE_DIR = CMakeFiles\LooseCoupled.dir\src\basetk
-
 build CMakeFiles/LooseCoupled.dir/src/basetk/base_app.cc.obj: CXX_COMPILER__LooseCoupled_Debug C$:/Users/Zing/CLionProjects/LooseCoupled/src/basetk/base_app.cc || cmake_object_order_depends_target_LooseCoupled
   DEP_FILE = CMakeFiles\LooseCoupled.dir\src\basetk\base_app.cc.obj.d
   FLAGS = -g -std=gnu++14
@@ -147,7 +141,7 @@ build CMakeFiles/LooseCoupled.dir/src/sinstk/sins_loose_coupled.cc.obj: CXX_COMP
 #############################################
 # Link the executable LooseCoupled.exe
 
-build LooseCoupled.exe: CXX_EXECUTABLE_LINKER__LooseCoupled_Debug CMakeFiles/LooseCoupled.dir/src/main.cc.obj CMakeFiles/LooseCoupled.dir/src/basetk/base_matrix.cc.obj CMakeFiles/LooseCoupled.dir/src/basetk/base_time.cc.obj CMakeFiles/LooseCoupled.dir/src/basetk/base_sdc.cc.obj CMakeFiles/LooseCoupled.dir/src/basetk/base_math.cc.obj CMakeFiles/LooseCoupled.dir/src/basetk/base_earth.cc.obj CMakeFiles/LooseCoupled.dir/src/basetk/base_app.cc.obj CMakeFiles/LooseCoupled.dir/src/gnsstk/gnss_app.cc.obj CMakeFiles/LooseCoupled.dir/src/gnsstk/gnss_file_stream.cc.obj CMakeFiles/LooseCoupled.dir/src/gnsstk/gnss_spp.cc.obj CMakeFiles/LooseCoupled.dir/src/gnsstk/gnss_rtk.cc.obj CMakeFiles/LooseCoupled.dir/src/sinstk/sins_app.cc.obj CMakeFiles/LooseCoupled.dir/src/sinstk/sins_file_stream.cc.obj CMakeFiles/LooseCoupled.dir/src/sinstk/sins_mechanization.cc.obj CMakeFiles/LooseCoupled.dir/src/sinstk/sins_loose_coupled.cc.obj
+build LooseCoupled.exe: CXX_EXECUTABLE_LINKER__LooseCoupled_Debug CMakeFiles/LooseCoupled.dir/src/main.cc.obj CMakeFiles/LooseCoupled.dir/src/basetk/base_matrix.cc.obj CMakeFiles/LooseCoupled.dir/src/basetk/base_time.cc.obj CMakeFiles/LooseCoupled.dir/src/basetk/base_sdc.cc.obj CMakeFiles/LooseCoupled.dir/src/basetk/base_math.cc.obj CMakeFiles/LooseCoupled.dir/src/basetk/base_app.cc.obj CMakeFiles/LooseCoupled.dir/src/gnsstk/gnss_app.cc.obj CMakeFiles/LooseCoupled.dir/src/gnsstk/gnss_file_stream.cc.obj CMakeFiles/LooseCoupled.dir/src/gnsstk/gnss_spp.cc.obj CMakeFiles/LooseCoupled.dir/src/gnsstk/gnss_rtk.cc.obj CMakeFiles/LooseCoupled.dir/src/sinstk/sins_app.cc.obj CMakeFiles/LooseCoupled.dir/src/sinstk/sins_file_stream.cc.obj CMakeFiles/LooseCoupled.dir/src/sinstk/sins_mechanization.cc.obj CMakeFiles/LooseCoupled.dir/src/sinstk/sins_loose_coupled.cc.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\LooseCoupled.dir

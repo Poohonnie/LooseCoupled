@@ -45,7 +45,8 @@ public:
 };
 
 class BdsTime : public GpsTime
-{};
+{
+};
 
 class BaseTime
 {
