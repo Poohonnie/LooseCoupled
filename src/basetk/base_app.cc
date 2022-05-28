@@ -8,8 +8,8 @@
  **********************************************************************************
  * @par 修改日志:
  * <table>
- * <tr><th>Date        <th>Version  <th>Author    <th>Description
- * <tr><td>2022/5/28  <td>1.0      <td>Zing Fong  <td>TInitialize
+ * <tr><th>Date         <th>Version  <th>Author     <th>Description
+ * <tr><td>2022/5/28    <td>1.0      <td>Zing Fong  <td>Initialize
  * </table>
  **********************************************************************************
  */
@@ -55,8 +55,7 @@ bool Config::isCommentChar(char c)
 }
 
 /**@brief 清除字符串前方和后方的多余空格
- * @param[in]   str     待裁剪的字符串
- * @param[out]  str     裁剪完成的字符串
+ * @param[in,out]   str     待裁剪的字符串
  * @par 示例:
  * @code
  *  std::string str = "     There are some blank spaces     ";
@@ -99,6 +98,15 @@ void Config::Trim(std::string &str)
     str = str.substr(start_pos, end_pos - start_pos + 1);
 }
 
+/**@brief 读取一行, 并对一行进行分析
+ * @param[in]       line        待分析的字符串
+ * @param[out]      section     配置参数大类section
+ * @param[out]      key         配置参数名key
+ * @param[out]      value       参数值value
+ * @return          返回结果:\n
+ * - true           该行不为空, 已分析完毕\n
+ * - false          该行为空\n
+ */
 bool Config::AnalyseLine(const std::string &line, std::string &section,
                          std::string &key, std::string &value)
 {
@@ -141,11 +149,21 @@ bool Config::AnalyseLine(const std::string &line, std::string &section,
     return true;
 }
 
+/**@brief       创建默认配置文件
+ * @return      判断结果\n
+ * - true       默认配置文件创建成功\n
+ * - false      默认配置文件创建失败\n
+ */
 bool Config::CreateDefaultConfig()
 {
-
+    
+    return true;
 }
 
+/**@brief       读取配置文件并保存配置参数
+ * @param[in]   filename     待读取的配置文件名
+ * @note        如果当前文件夹下没找到配置文件, 则会创建一个默认的
+ */
 bool Config::ReadConfig(const std::string &filename)
 {
     settings_.clear();
@@ -186,6 +204,15 @@ bool Config::ReadConfig(const std::string &filename)
     return true;
 }
 
+/**@brief           读取类型为string的参数
+ * @param[in]       line        待分析的字符串
+ * @param[out]      section     配置参数大类section
+ * @param[out]      key         配置参数名key
+ * @param[out]      value       参数值value
+ * @return          返回结果:\n
+ * - true           该行不为空, 已分析完毕\n
+ * - false          该行为空\n
+ */
 std::string Config::ReadString(const char *section, const char *item,
                                const char *default_value)
 {
