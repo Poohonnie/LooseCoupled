@@ -24,10 +24,28 @@
  */
 #include <iostream>
 
+#include <iostream>
+#include "basetk/base_app.h"
+#include <fstream>
+#include <cassert>
 
 int main()
 {
+    Config config{};
+    bool ret = config.ReadConfig("config.ini.txt");
+    if (!ret)
+    {
+        return 1;
+    }
+    std::string HostName = config.ReadString("MYSQL", "HostName", "");
+    int Port = config.ReadInt("MYSQL", "Port", 0);
+    std::string UserName = config.ReadString("MYSQL", "UserName", "");
     
+    std::cout << "HostName=" << HostName << std::endl;
+    std::cout << "Port=" << Port << std::endl;
+    std::cout << "UserName=" << UserName << std::endl;
     
+    system("Pause");
     return 0;
 }
+
