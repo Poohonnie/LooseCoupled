@@ -102,7 +102,10 @@ public:
                     3.986004418e+14,
                     7.292115e-5
             };  // CGCS2000坐标系参数
-    
+            
+    static constexpr int kMaxChannelNum = 36;  // 一秒最多可观测到的卫星数
+    static constexpr int kMaxGpsNum = 32;  // GPS最大卫星数
+    static constexpr int kMaxBdsNum = 63;  // BDS最大卫星数
 };
 
 

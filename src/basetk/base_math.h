@@ -75,9 +75,9 @@ public:
             const BaseMatrix &rotation);  // 四元数转欧拉角
     
     // e系下的重力加速度向量计算
-    static std::vector<double> get_ge(const std::vector<double> &blh);
-    static std::vector<double> get_ge(const double &b,
-                                      const double &l, const double &h);
+    static std::vector<double> Calc_ge(const std::vector<double> &blh);
+    static std::vector<double> Calc_ge(const double &b,
+                                       const double &l, const double &h);
     
 };
 

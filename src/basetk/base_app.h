@@ -8,8 +8,8 @@
  **********************************************************************************
  * @par 修改日志:
  * <table>
- * <tr><th>Date        <th>Version  <th>Author    <th>Description
- * <tr><td>2022/5/28  <td>1.0      <td>Zing Fong  <td>Initialize
+ * <tr><th>Date        <th>Version  <th>Author      <th>Description
+ * <tr><td>2022/5/28   <td>1.0      <td>Zing Fong   <td>Initialize
  * </table>
  **********************************************************************************
  */
@@ -57,6 +57,8 @@ class Config
     [SINS]
     imr_file_path=
      */
+     friend class BaseApp;
+     
 public:
     bool ReadConfig(const std::string &filename);  // 读取配置文件并保存配置参数
     std::string ReadString(const char *section, const char *item,
@@ -77,10 +79,30 @@ private:
     
     // 参数设置, 支持块->参数项->参数值的存储模式
     std::map<std::string, std::map<std::string, std::string> > settings_;
+
+    
+
+
 };
 
+
+/**@class   BaseApp
+ * @brief   应用程序类, 负责程序运行模式的管理, 是整个应用的唯一入口
+ * @par     修改日志:
+ * <table>
+ * <tr><th>Date         <th>Author      <th>Description
+ * <tr><td>2022/5/29    <td>Zing Fong   <td>Initialize
+ * </table>
+ */
 class BaseApp
 {
+public:
+    void run();  // 启动函数, 在此读取配置表并选择解算类型等
+    
+private:
+    Config config_{};  // 配置表
+    // GnssApp gnss_app_{};
+    // SinsApp sins_app_{};
 
 };
 
