@@ -58,21 +58,24 @@ class Config
     imr_file_path=
      */
 public:
-    bool ReadConfig(const std::string &filename);
+    bool ReadConfig(const std::string &filename);  // 读取配置文件并保存配置参数
     std::string ReadString(const char *section, const char *item,
-                           const char *default_value);
-    int ReadInt(const char *section, const char *item, const int &default_value);
-    float ReadFloat(const char *section, const char *item, const float &default_value);
+                           const char *default_value);  // 读取类型为string的参数
+    int ReadInt(const char *section, const char *item,
+                const int &default_value);  // 读取类型为int的参数
+    float ReadFloat(const char *section, const char *item,
+                    const float &default_value);  // 读取类型为float的参数
 
 private:
-    bool isSpace(char c);
-    bool isCommentChar(char c);
-    void Trim(std::string &str);
+    bool isSpace(char c);  // 判断一个char类型变量是否为' '字符
+    bool isCommentChar(char c);  // 判断一个char类型变量是否为注释标识符
+    void Trim(std::string &str);  // 清除字符串前方和后方的多余空格
     bool AnalyseLine(const std::string &line, std::string &section,
-                     std::string &key, std::string &value);
-    bool CreateDefaultConfig();
+                     std::string &key, std::string &value);  // 读取一行, 并对一行进行分析
+    bool CreateDefaultConfig();  // 创建默认配置文件
     
-    //std::map<std::string, std::string> settings_;
+    
+    // 参数设置, 支持块->参数项->参数值的存储模式
     std::map<std::string, std::map<std::string, std::string> > settings_;
 };
 

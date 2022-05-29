@@ -30,6 +30,8 @@
  * @return      判断结果\n
  * - true       该字符为空格\n
  * - false      该字符不为空格\n
+ * @author      Zing Fong
+ * @date        2022/5/29
  */
 bool Config::isSpace(char c)
 {
@@ -43,6 +45,8 @@ bool Config::isSpace(char c)
  * @return      判断结果\n
  * - true       该字符为注释标识符\n
  * - false      该字符不为注释标识符\n
+ * @author      Zing Fong
+ * @date        2022/5/29
  */
 bool Config::isCommentChar(char c)
 {
@@ -56,6 +60,8 @@ bool Config::isCommentChar(char c)
 
 /**@brief 清除字符串前方和后方的多余空格
  * @param[in,out]   str     待裁剪的字符串
+ * @author      Zing Fong
+ * @date        2022/5/29
  * @par 示例:
  * @code
  *  std::string str = "     There are some blank spaces     ";
@@ -106,6 +112,8 @@ void Config::Trim(std::string &str)
  * @return          返回结果:\n
  * - true           该行不为空, 已分析完毕\n
  * - false          该行为空\n
+ * @author      Zing Fong
+ * @date        2022/5/29
  */
 bool Config::AnalyseLine(const std::string &line, std::string &section,
                          std::string &key, std::string &value)
@@ -153,6 +161,8 @@ bool Config::AnalyseLine(const std::string &line, std::string &section,
  * @return      判断结果\n
  * - true       默认配置文件创建成功\n
  * - false      默认配置文件创建失败\n
+ * @author      Zing Fong
+ * @date        2022/5/29
  */
 bool Config::CreateDefaultConfig()
 {
@@ -163,6 +173,8 @@ bool Config::CreateDefaultConfig()
 /**@brief       读取配置文件并保存配置参数
  * @param[in]   filename     待读取的配置文件名
  * @note        如果当前文件夹下没找到配置文件, 则会创建一个默认的
+ * @author      Zing Fong
+ * @date        2022/5/29
  */
 bool Config::ReadConfig(const std::string &filename)
 {
@@ -204,14 +216,15 @@ bool Config::ReadConfig(const std::string &filename)
     return true;
 }
 
-/**@brief           读取类型为string的参数
- * @param[in]       line        待分析的字符串
- * @param[out]      section     配置参数大类section
- * @param[out]      key         配置参数名key
- * @param[out]      value       参数值value
- * @return          返回结果:\n
- * - true           该行不为空, 已分析完毕\n
- * - false          该行为空\n
+/**@brief          读取类型为string的参数
+ * @param[in]      section              要查找的块
+ * @param[in]      item                 要查找的参数项
+ * @param[in]      default_value        该参数项的预设默认值
+ * @return         返回结果:\n
+ * - 如果配置文件中该参数有值       返回读取到的值\n
+ * - 该参数值为空                 返回预设默认值\n
+ * @author      Zing Fong
+ * @date        2022/5/29
  */
 std::string Config::ReadString(const char *section, const char *item,
                                const char *default_value)
@@ -238,8 +251,18 @@ std::string Config::ReadString(const char *section, const char *item,
     return it_item->second;
 }
 
-int
-Config::ReadInt(const char *section, const char *item, const int &default_value)
+/**@brief          读取类型为int的参数
+ * @param[in]      section              要查找的块
+ * @param[in]      item                 要查找的参数项
+ * @param[in]      default_value        该参数项的预设默认值
+ * @return         返回结果:\n
+ * - 如果配置文件中该参数有值       返回读取到的值\n
+ * - 该参数值为空                 返回预设默认值\n
+ * @author      Zing Fong
+ * @date        2022/5/29
+ */
+int Config::ReadInt(const char *section, const char *item,
+                    const int &default_value)
 {
     std::string tmp_s(section);
     std::string tmp_i(item);
@@ -260,6 +283,16 @@ Config::ReadInt(const char *section, const char *item, const int &default_value)
     return atoi(it_item->second.c_str());
 }
 
+/**@brief          读取类型为float的参数
+ * @param[in]      section              要查找的块
+ * @param[in]      item                 要查找的参数项
+ * @param[in]      default_value        该参数项的预设默认值
+ * @return         返回结果:\n
+ * - 如果配置文件中该参数有值       返回读取到的值\n
+ * - 该参数值为空                 返回预设默认值\n
+ * @author      Zing Fong
+ * @date        2022/5/29
+ */
 float Config::ReadFloat(const char *section, const char *item,
                         const float &default_value)
 {

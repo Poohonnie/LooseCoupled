@@ -37,7 +37,8 @@ class BaseMatrix
 {
 public:
     BaseMatrix();  // 默认构造函数
-    BaseMatrix(const std::vector<double> &mat, const int &row, const int &col);  // 构造函数
+    BaseMatrix(const std::vector<double> &mat, const int &row,
+               const int &col);  // 构造函数
     BaseMatrix(const int &row, const int &col);  // 全零矩阵构造函数
     BaseMatrix(const BaseMatrix &src);  // 拷贝构造函数
     static BaseMatrix eye(const int &n);  // 单位阵
@@ -58,8 +59,10 @@ public:
     BaseMatrix Inverse() const;  // 矩阵求逆, 返回该矩阵的逆矩阵
     BaseMatrix Trans() const;  // 矩阵转置, 返回该矩阵的转置矩阵
     void setZero();  // 将矩阵置零
-    void addRow(const std::vector<double> &vec, const int &aim_row);  // 矩阵扩展, 加一行
-    void addCol(const std::vector<double> &vec, const int &aim_col);  // 矩阵扩展, 加一列
+    void addRow(const std::vector<double> &vec,
+                const int &aim_row);  // 矩阵扩展, 加一行
+    void addCol(const std::vector<double> &vec,
+                const int &aim_col);  // 矩阵扩展, 加一列
     void subRow(const int &aim_row);  // 去掉一行
     void subCol(const int &aim_col);  // 去掉一列
     
@@ -71,7 +74,7 @@ public:
     int get_col() const;
     // mat_的get()
     std::vector<double> get_mat() const;
-    
+
 private:
     int row_{};  // 矩阵行数
     int col_{};  // 矩阵列数
