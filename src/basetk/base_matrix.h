@@ -9,7 +9,7 @@
  * @par 修改日志:
  * <table>
  * <tr><th>Date         <th>Version  <th>Author     <th>Description
- * <tr><td>2022/5/25    <td>1.0      <td>Zing Fong  <td>To be initialized
+ * <tr><td>2022/5/25    <td>1.0      <td>Zing Fong  <td>Initialize
  * </table>
  **********************************************************************************
  */
@@ -30,12 +30,13 @@
  * @par 修改日志:
  * <table>
  * <tr><th>Date         <th>Author      <th>Description
- * <tr><td>2022/5/25    <td>Zing Fong   <td>To be initialized
+ * <tr><td>2022/5/25    <td>Zing Fong   <td>Initialize
+ * <tr><td>2022/5/31    <td>Zing Fong   <td>增加了求反对称矩阵的函数
  * </table>
  */
 class BaseMatrix
 {
-public:
+  public:
     BaseMatrix();  // 默认构造函数
     BaseMatrix(const std::vector<double> &mat, const int &row,
                const int &col);  // 构造函数
@@ -43,6 +44,8 @@ public:
     BaseMatrix(const BaseMatrix &src);  // 拷贝构造函数
     static BaseMatrix eye(const int &n);  // 单位阵
     static BaseMatrix zeros(const int &row, const int &col);  // 全零阵
+    static BaseMatrix CalcAntisymmetryMat(
+            const std::vector<double> vector);  // 求向量的反对称矩阵
     
     void disp(const int width = 9, const int presise = 4);  // 按照位宽和精度显示矩阵
     double read(const int &row, const int &col) const;  // 读取矩阵元素
@@ -74,8 +77,8 @@ public:
     int get_col() const;
     // mat_的get()
     std::vector<double> get_mat() const;
-
-private:
+  
+  private:
     int row_{};  // 矩阵行数
     int col_{};  // 矩阵列数
     std::vector<double> mat_{};  // 矩阵的一维数组存储

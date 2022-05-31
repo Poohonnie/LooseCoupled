@@ -25,6 +25,7 @@
 // 本项目内 .h 文件
 #include "../basetk/base_time.h"
 #include "../basetk/base_sdc.h"
+#include "../basetk/base_app.h"
 
 /**@struct      SatObs
  * @brief       单个卫星的观测值, 包括双频伪距, 双频载波相位, 多普勒频移
@@ -56,18 +57,20 @@ struct SatObs
  */
 class EpochObs
 {
-public:
-
-    int FindSatObsIndex(const int &prn, const Gnss &sys);  // 搜索某个prn号的卫星在epkObs中的下标
+  public:
+    
+    int FindSatObsIndex(const int &prn,
+                        const Gnss &sys);  // 搜索某个prn号的卫星在epkObs中的下标
     
     GpsTime get_time() const;
     int get_sat_num() const;
     std::vector<SatObs> get_sat_obs() const;
-    
-private:
+  
+  private:
     GpsTime time_{};  // 该历元的时间
     int sat_num_{};  // 观测值数目
-    std::vector<SatObs> sat_obs_ = std::vector<SatObs>(BaseSdc::kMaxChannelNum, SatObs{});  // 单个历元所有卫星观测值
+    std::vector<SatObs> sat_obs_ = std::vector<SatObs>(BaseSdc::kMaxChannelNum,
+                                                       SatObs{});  // 单个历元所有卫星观测值
 };
 
 /**@struct       Ephemeris
@@ -120,8 +123,10 @@ struct Ephemeris
 struct RawData
 {
     EpochObs epoch_obs{};
-    std::vector<Ephemeris> gps_ephem = std::vector<Ephemeris>(BaseSdc::kMaxGpsNum, Ephemeris{});
-    std::vector<Ephemeris> bds_ephem = std::vector<Ephemeris>(BaseSdc::kMaxBdsNum, Ephemeris{});
+    std::vector<Ephemeris> gps_ephem = std::vector<Ephemeris>(
+            BaseSdc::kMaxGpsNum, Ephemeris{});
+    std::vector<Ephemeris> bds_ephem = std::vector<Ephemeris>(
+            BaseSdc::kMaxBdsNum, Ephemeris{});
 };
 
 /**@class   GnssFileStream
@@ -130,21 +135,25 @@ struct RawData
  * <table>
  * <tr><th>Date         <th>Author      <th>Description
  * <tr><td>2022/5/29    <td>Zing Fong   <td>Initialize
+ * <tr><td>2022/5/31    <td>Zing Fong   <td>增加了初始化函数, 更改了部分函数访问权限
  * </table>
  */
 class GnssFileStream
 {
-public:
-    int ReadOFile(const char *file_name);  // O文件中读取一秒的观测值
+  public:
+    int Init(const Config &config);  // 初始化, 打开文件等
     
-    int ReadPFile(const char *file_name);  // 读取P文件, 注意只有在星历过期的时候才会读
+    int ReadOFile();  // O文件中读取一秒的观测值
+    int ReadPFile();  // 读取P文件, 注意只有在星历过期的时候才会读
+    
+    // get
+    GpsTime get_time() const;
+    RawData get_raw_data() const;
+  
+  private:
     int ReadGpsEphemeris();  // 从当前指针所指位置读取GPS星历
     int ReadBdsEphemeris();  // 从当前文件指针所指位置读取BDS星历
     
-    GpsTime get_time() const;
-    RawData get_raw_data() const;
-    
-private:
     FILE *o_file_ptr_{};  // o文件指针
     FILE *p_file_ptr_{};  // p文件指针
     GpsTime time_{};  // 该历元的时间

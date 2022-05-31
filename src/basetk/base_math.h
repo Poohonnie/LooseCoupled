@@ -36,7 +36,7 @@
  */
 class BaseMath
 {
-public:
+  public:
     // 坐标转换函数
     static std::vector<double> XyzAdd(const std::vector<double> &add_xyz1,
                                       const std::vector<double> &add_xyz2);  // 地心地固坐标加法
@@ -61,18 +61,21 @@ public:
     // 姿态转换
     // 欧拉角排列顺序roll, pitch, yaw
     // 旋转顺序R(yaw, pitch, roll)
-    static BaseMatrix Euler2Rotation(
-            const std::vector<double> &euler);  // 欧拉角转方向余弦矩阵
-    static std::vector<double> Rotation2Euler(
-            const BaseMath &rotation);  // 方向余弦矩阵转欧拉角
+    static BaseMatrix Euler2RotationMat(
+            const std::vector<double> &euler);  // 欧拉角转旋转矩阵
+    static std::vector<double> RotationMat2Euler(
+            const BaseMath &rotation_mat);  // 旋转矩阵转欧拉角
     static std::vector<double> Euler2Quaternion(
             const std::vector<double> &euler);  // 欧拉角转四元数
     static std::vector<double> Quaternion2Euler(
             const std::vector<double> &quaternion);  // 四元数转欧拉角
-    static BaseMatrix Quaternion2Rotation(
-            const std::vector<double> &quaternion);  // 四元数转方向余弦矩阵
-    static std::vector<double> Rotation2Quaternion(
-            const BaseMatrix &rotation);  // 四元数转欧拉角
+    static BaseMatrix Quaternion2RotationMat(
+            const std::vector<double> &quaternion);  // 四元数转旋转矩阵
+    static std::vector<double> RotationMat2Quaternion(
+            const BaseMatrix &rotation_mat);  // 旋转矩阵转四元数
+    static std::vector<double> Quaternion2RotationVec(
+            const std::vector<double> &quaternion);  // 四元数转旋转矢量
+    static BaseMatrix RotationVec2RotationMat(const std::vector<double> &rotation_vec);  // 旋转矢量转旋转矩阵
     
     // e系下的重力加速度向量计算
     static std::vector<double> Calc_ge(const std::vector<double> &blh);

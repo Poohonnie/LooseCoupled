@@ -13,6 +13,7 @@ add_executable(LooseCoupled
                src/gnsstk/gnss_app.cc src/gnsstk/gnss_app.h
                src/gnsstk/gnss_file_stream.cc src/gnsstk/gnss_file_stream.h
                src/gnsstk/gnss_spp.cc src/gnsstk/gnss_spp.h
+               src/gnsstk/lambda.cc
                src/gnsstk/gnss_rtk.cc src/gnsstk/gnss_rtk.h
                src/sinstk/sins_app.cc src/sinstk/sins_app.h
                src/sinstk/sins_file_stream.cc src/sinstk/sins_file_stream.h

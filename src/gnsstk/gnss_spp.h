@@ -84,8 +84,8 @@ struct TmpParam
 class SatPos
 {
     friend class EpochPos;
-
-public:
+  
+  public:
     bool valid{};  // 定位结果是否可用 例如高度角限制等等
     
     // TODO:确认这里的时间哪些是没有更改的, make it const
@@ -116,8 +116,8 @@ public:
     
     // set
     void set_clk_bias();
-
-private:
+  
+  private:
     Gnss sys_{};
     int prn_{};
     std::vector<double> sat_xyz_ = std::vector<double>(3,
@@ -141,11 +141,14 @@ private:
  */
 class EpochPos
 {
-public:
-    
+  public:
     int FindSatPosIndex(const int &prn, const Gnss &sys);  // 查找卫星
-
-private:
+    
+    // get
+    int get_sat_num() const;
+    std::vector<SatPos> get_sat_pos() const;
+  
+  private:
     int sat_num_{};  // 卫星数
     std::vector<SatPos> sat_pos_ = std::vector<SatPos>(BaseSdc::kMaxBdsNum,
                                                        SatPos{});
@@ -181,14 +184,14 @@ struct Gfmw
  */
 class EpochGfmw
 {
-public:
+  public:
     int FindGfmwIndex(const int &prn,
                       const Gnss &sys);  // 搜索某个prn号的卫星在epkGfmw中的下标
     
     // get
-    std::vector<Gfmw> get_gfmw();
-
-private:
+    std::vector<Gfmw> get_gfmw() const;
+  
+  private:
     std::vector<Gfmw> gfmw_ = std::vector<Gfmw>(BaseSdc::kMaxChannelNum,
                                                 Gfmw{});  // 单个历元所有GFMW组合观测值
     
@@ -204,13 +207,13 @@ private:
  */
 class OutlierDetector
 {
-public:
+  public:
     void DetectOutlier(RawData raw_data);
     
     // get
-    EpochGfmw get_cur_epoch();
-
-private:
+    EpochGfmw get_cur_epoch() const;
+  
+  private:
     EpochGfmw last_epoch{};  // 上一历元GF和MW组合
     EpochGfmw cur_epoch{};  // 当前历元GF和MW组合
 };
@@ -225,7 +228,7 @@ private:
  */
 class GnssSpp
 {
-public:
+  public:
     void ExtendMatB(BaseMatrix &B,
                     const int total);  // 将设计矩阵B根据GPS以及BDS卫星数目情况进行扩展
     void ExtendDeltaX(BaseMatrix &deltaX);  // 将deltaX根据GPS以及BDS卫星数目情况进行扩展
@@ -247,8 +250,8 @@ public:
     std::vector<double> get_sigma_v() const;
     std::vector<int> get_sys_num() const;
     EpochPos get_epoch_pos() const;
-
-private:
+  
+  private:
     GpsTime t_{};  // 信号发射时刻
     
     std::vector<double> station_xyz_ = std::vector<double>(3,
