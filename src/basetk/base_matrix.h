@@ -31,13 +31,13 @@
  * <table>
  * <tr><th>Date         <th>Author      <th>Description
  * <tr><td>2022/5/25    <td>Zing Fong   <td>Initialize
- * <tr><td>2022/5/31    <td>Zing Fong   <td>增加了求反对称矩阵的函数
+ * <tr><td>2022/5/31    <td>Zing Fong   <td>增加了求反对称矩阵的函数, 更改了默认构造函数
  * </table>
  */
 class BaseMatrix
 {
   public:
-    BaseMatrix();  // 默认构造函数
+    BaseMatrix() = default;  // 默认构造函数
     BaseMatrix(const std::vector<double> &mat, const int &row,
                const int &col);  // 构造函数
     BaseMatrix(const int &row, const int &col);  // 全零矩阵构造函数
@@ -79,9 +79,9 @@ class BaseMatrix
     std::vector<double> get_mat() const;
   
   private:
-    int row_{};  // 矩阵行数
-    int col_{};  // 矩阵列数
-    std::vector<double> mat_{};  // 矩阵的一维数组存储
+    int row_ = 1;  // 矩阵行数
+    int col_ = 1;  // 矩阵列数
+    std::vector<double> mat_ = std::vector<double>(1, 0.0);  // 矩阵的一维数组存储
 };
 
 
