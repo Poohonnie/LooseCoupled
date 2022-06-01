@@ -25,7 +25,7 @@
 
 /**@enum    Gnss
  * @brief   GNSS系统枚举类, 定义了四个卫星系统
- * @par 修改日志:
+ * @par     修改日志:
  * <table>
  * <tr><th>Date         <th>Author      <th>Description
  * <tr><td>2022/5/27    <td>Zing Fong   <td>Initialize
@@ -38,7 +38,7 @@ enum class Gnss
 
 /**@struct      CoorSys
  * @brief       坐标系统, 用于存储WGS84和CGCS2000坐标参数
- * @par 修改日志:
+ * @par         修改日志:
  * <table>
  * <tr><th>Date         <th>Author      <th>Description
  * <tr><td>2022/5/27    <td>Zing Fong   <td>Initialize
@@ -57,7 +57,7 @@ struct CoorSys
 
 /**@class   BaseSdc
  * @brief   科学资料中心SDC类, 声明并定义了各种常量
- * @par 修改日志:
+ * @par     修改日志:
  * <table>
  * <tr><th>Date         <th>Author      <th>Description
  * <tr><td>2022/5/27    <td>Zing Fong   <td>Initialize

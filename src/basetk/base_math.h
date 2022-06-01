@@ -9,7 +9,7 @@
  * @par 修改日志:
  * <table>
  * <tr><th>Date         <th>Version  <th>Author     <th>Description
- * <tr><td>2022/5/28    <td>1.0      <td>Zing Fong  <td>Initialize
+ * <tr><td>2022/5/27    <td>1.0      <td>Zing Fong  <td>Initialize
  * </table>
  **********************************************************************************
  */

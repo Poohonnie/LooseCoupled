@@ -29,7 +29,7 @@
 #include "sins_file_stream.h"
 #include "sins_mechanization.h"
 
-
+// TODO: 完成松组合算法设计
 class SinsLooseCoupled
 {
 

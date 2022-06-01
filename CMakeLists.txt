@@ -7,7 +7,7 @@ add_executable(LooseCoupled
                src/main.cc
                src/basetk/base_matrix.cc src/basetk/base_matrix.h
                src/basetk/base_time.cc src/basetk/base_time.h
-               src/basetk/base_sdc.cc src/basetk/base_sdc.h
+               src/basetk/base_sdc.h
                src/basetk/base_math.cc src/basetk/base_math.h
                src/basetk/base_app.cc src/basetk/base_app.h
                src/gnsstk/gnss_app.cc src/gnsstk/gnss_app.h

@@ -25,8 +25,8 @@
 
 // 本项目内 .h 文件
 
-/**@brief 判断一个char类型变量是否为' '字符
- * @param[in]  c    要判断的字符
+/**@brief       判断一个char类型变量是否为' '字符
+ * @param[in]   c    要判断的字符
  * @return      判断结果\n
  * - true       该字符为空格\n
  * - false      该字符不为空格\n
@@ -40,8 +40,8 @@ bool Config::isSpace(char c)
     return false;
 }
 
-/**@brief 判断一个char类型变量是否为注释标识符
- * @param[in]  c    要判断的字符
+/**@brief       判断一个char类型变量是否为注释标识符
+ * @param[in]   c    要判断的字符
  * @return      判断结果\n
  * - true       该字符为注释标识符\n
  * - false      该字符不为注释标识符\n
@@ -58,7 +58,7 @@ bool Config::isCommentChar(char c)
     }
 }
 
-/**@brief 清除字符串前方和后方的多余空格
+/**@brief       清除字符串前方和后方的多余空格
  * @param[in,out]   str     待裁剪的字符串
  * @author      Zing Fong
  * @date        2022/5/29
@@ -104,7 +104,7 @@ void Config::Trim(std::string &str)
     str = str.substr(start_pos, end_pos - start_pos + 1);
 }
 
-/**@brief 读取一行, 并对一行进行分析
+/**@brief           读取一行, 并对一行进行分析
  * @param[in]       line        待分析的字符串
  * @param[out]      section     配置参数大类section
  * @param[out]      key         配置参数名key
