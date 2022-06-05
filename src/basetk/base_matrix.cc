@@ -10,6 +10,7 @@
  * <table>
  * <tr><th>Date        <th>Version  <th>Author     <th>Description
  * <tr><td>2022/6/1    <td>1.0      <td>Zing Fong  <td>Initialize
+ * <tr><td>2022/6/5    <td>1.1      <td>Zing Fong  <td>加入了矩阵求迹函数
  * </table>
  **********************************************************************************
  */
@@ -510,6 +511,24 @@ BaseMatrix BaseMatrix::Trans() const
         for(int j = 0; j < n; j++)
             trans_mat.mat_[j*m + i] = mat_[i*n + j];  // 原矩阵i行j列元素赋值到转置矩阵中j行i列处
     return trans_mat;
+}
+
+/**@brief       矩阵求迹
+ * @return      该矩阵的迹
+ * @author      Zing Fong
+ * @date        2022/6/5
+ */
+double BaseMatrix::Trace() const
+{
+    if(row_num_ != col_num_)
+    {
+        printf("Calculation trace error: Not a square.\n");
+        return 0.0;
+    }
+    double trace{};
+    for(int i = 0; i < row_num_; ++i)
+        trace += this->read(i, i);
+    return trace;
 }
 
 /**@brief       矩阵置零

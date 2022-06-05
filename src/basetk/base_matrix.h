@@ -10,6 +10,7 @@
  * <table>
  * <tr><th>Date         <th>Version  <th>Author     <th>Description
  * <tr><td>2022/5/25    <td>1.0      <td>Zing Fong  <td>Initialize
+ * <tr><td>2022/6/5     <td>1.1      <td>Zing Fong  <td>加入了矩阵求迹函数
  * </table>
  **********************************************************************************
  */
@@ -61,6 +62,7 @@ class BaseMatrix
     
     BaseMatrix Inverse() const;  // 矩阵求逆, 返回该矩阵的逆矩阵
     BaseMatrix Trans() const;  // 矩阵转置, 返回该矩阵的转置矩阵
+    double Trace() const;  // 矩阵求迹
     void setZero();  // 将矩阵置零
     void InsertRow(const std::vector<double> &vec, const int &aim_row);  // 矩阵扩展, 加一行
     void InsertCol(const std::vector<double> &vec, const int &aim_col);  // 矩阵扩展, 加一列

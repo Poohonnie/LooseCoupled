@@ -10,6 +10,7 @@
  * <table>
  * <tr><th>Date         <th>Version  <th>Author     <th>Description
  * <tr><td>2022/5/27    <td>1.0      <td>Zing Fong  <td>Initialize
+ * <tr><td>2022/6/5     <td>1.1      <td>Zing Fong  <td>修正了对constexpr变量引用的错误
  * </table>
  **********************************************************************************
  */
@@ -37,15 +38,18 @@
 class BaseMath
 {
   public:
+    static double max(std::initializer_list<double> list);  // 求最大值
+    static double min(std::initializer_list<double> list);  // 求最小值
+    
     // 坐标转换函数
     static std::vector<double> XyzAdd(const std::vector<double> &add_xyz1,
                                       const std::vector<double> &add_xyz2);  // 地心地固坐标加法
     static std::vector<double> XyzSub(const std::vector<double> &minuend,
                                       const std::vector<double> &subtrahend);  // 地心地固坐标减法
     static std::vector<double> Blh2Xyz(const std::vector<double> &blh,
-                                       const CoorSys &coor_sys);  // 大地坐标转地心地固坐标
+                                       CoorSys coor_sys);  // 大地坐标转地心地固坐标
     static std::vector<double> Xyz2Blh(const std::vector<double> &xyz,
-                                       const CoorSys &coor_sys);  // 地心地固坐标转大地坐标
+                                       CoorSys coor_sys);  // 地心地固坐标转大地坐标
     static double Deg2Rad(const int &deg,
                           const int &min, const double &sec);  // 度分秒转弧度
     static std::vector<double> CalcEnu(const std::vector<double> &ref_xyz,
@@ -56,7 +60,8 @@ class BaseMath
             const std::vector<double> &quaternion1,
             const std::vector<double> &quaternion2);  // 四元数乘法
     static double Norm(const std::vector<double> &vector);  // 向量取模
-    static void Normalize(std::vector<double> &vector);  // 四元数归一化
+    static void Normalize(std::vector<double> &vector);  // 向量归一化
+    static void QuaternionNormalize(std::vector<double> &quaternion);  // 四元数归一化
     
     // 姿态转换
     // 欧拉角排列顺序roll, pitch, yaw
@@ -64,7 +69,7 @@ class BaseMath
     static BaseMatrix Euler2RotationMat(
             const std::vector<double> &euler);  // 欧拉角转旋转矩阵
     static std::vector<double> RotationMat2Euler(
-            const BaseMath &rotation_mat);  // 旋转矩阵转欧拉角
+            const BaseMatrix &rotation_mat);  // 旋转矩阵转欧拉角
     static std::vector<double> Euler2Quaternion(
             const std::vector<double> &euler);  // 欧拉角转四元数
     static std::vector<double> Quaternion2Euler(
@@ -75,12 +80,15 @@ class BaseMath
             const BaseMatrix &rotation_mat);  // 旋转矩阵转四元数
     static std::vector<double> Quaternion2RotationVec(
             const std::vector<double> &quaternion);  // 四元数转旋转矢量
-    static BaseMatrix RotationVec2RotationMat(const std::vector<double> &rotation_vec);  // 旋转矢量转旋转矩阵
+    static std::vector<double> RotationVec2Quaternion(
+            const std::vector<double> &rotation_vec);  // 旋转矢量转四元数
+    static BaseMatrix RotationVec2RotationMat(
+            const std::vector<double> &rotation_vec);  // 旋转矢量转旋转矩阵
+    static std::vector<double> RotationMat2RotationVec(
+            const BaseMatrix &rotation_mat);  // 旋转矩阵转旋转矢量
     
-    // e系下的重力加速度向量计算
+    // e系下的重力加速度矢量计算
     static std::vector<double> Calc_ge(const std::vector<double> &blh);
-    static std::vector<double> Calc_ge(const double &b,
-                                       const double &l, const double &h);
     
 };
 

@@ -27,13 +27,13 @@
 #include <iostream>
 #include "basetk/base_app.h"
 #include "basetk/base_matrix.h"
+#include "basetk/base_math.h"
 #include <fstream>
 #include <cassert>
 
 int main()
 {
-    std::vector<double> vector(3, 0.0);
-    printf("size: %d", vector.size());
+    std::cout << BaseMath::max({5, 0, 9, -1, 112, 114514});
 //    Config config{};
 //    bool ret = config.ReadConfig("config.ini");
 //    if (!ret)

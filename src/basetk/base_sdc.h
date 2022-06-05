@@ -1,6 +1,6 @@
 /**@file    base_sdc.h
  * @brief   科学资料中心sdc.h文件
- * @details 定义了各种常数以及GNSS系统的枚举类
+ * @details 声明了各种常数以及GNSS系统的枚举类
  * @author  Zing Fong\n
  *          zing.fong.whu\@outlook.com
  * @date    2022/5/27
@@ -65,7 +65,7 @@ struct CoorSys
  */
 class BaseSdc
 {
-public:
+  public:
     static constexpr double kPi = 3.14159265358979323846;  // 圆周率
     static constexpr int kVOfLight = 299792458;  // 光速c, 单位 m/s
     static constexpr double kD2R = kPi/180.0;  // 角度转弧度
@@ -101,11 +101,10 @@ public:
                     3.986004418e+14,
                     7.292115e-5
             };  // CGCS2000坐标系参数
-            
+    
     static constexpr int kMaxChannelNum = 36;  // 一秒最多可观测到的卫星数
     static constexpr int kMaxGpsNum = 32;  // GPS最大卫星数
     static constexpr int kMaxBdsNum = 63;  // BDS最大卫星数
 };
-
 
 #endif //LOOSECOUPLED_SRC_BASETK_BASE_SDC_H
