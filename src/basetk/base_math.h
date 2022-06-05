@@ -46,8 +46,8 @@ class BaseMath
                                        const CoorSys &coor_sys);  // 大地坐标转地心地固坐标
     static std::vector<double> Xyz2Blh(const std::vector<double> &xyz,
                                        const CoorSys &coor_sys);  // 地心地固坐标转大地坐标
-    static double Deg2Rad(const double &deg,
-                          const double &min, const double &sec);  // 度分秒转弧度
+    static double Deg2Rad(const int &deg,
+                          const int &min, const double &sec);  // 度分秒转弧度
     static std::vector<double> CalcEnu(const std::vector<double> &ref_xyz,
                                        const std::vector<double> &station_xyz);  // 计算测站在参考坐标下的ENU坐标(误差)
     
