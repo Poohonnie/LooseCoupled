@@ -18,4 +18,4 @@ add_executable(LooseCoupled
                src/sinstk/sins_app.cc src/sinstk/sins_app.h
                src/sinstk/sins_file_stream.cc src/sinstk/sins_file_stream.h
                src/sinstk/sins_mechanization.cc src/sinstk/sins_mechanization.h
-               src/sinstk/sins_loose_coupled.cc src/sinstk/sins_loose_coupled.h)
+               src/sinstk/sins_loose_coupled.cc src/sinstk/sins_loose_coupled.h src/gnsstk/gnss_pos.cc src/gnsstk/gnss_pos.h)
