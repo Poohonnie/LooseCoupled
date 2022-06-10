@@ -617,6 +617,11 @@ std::vector<double> BaseMath::RotationMat2RotationVec(
  */
 std::vector<double> BaseMath::Calc_ge(const std::vector<double> &blh)
 {
+    if(blh.size() != 3)
+    {
+        printf("Calc_ge error.\n");
+        return std::vector<double>(3, 0.0);
+    }
     double g0 = 9.7803267715;
     double a1 = 0.0052790414;
     double a2 = 0.0000232718;

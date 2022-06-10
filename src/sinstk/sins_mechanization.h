@@ -34,14 +34,17 @@
  * <table>
  * <tr><th>Date         <th>Author      <th>Description
  * <tr><td>2022/5/31    <td>Zing Fong   <td>Initialize
+ * <tr><td>2022/6/9     <td>Zing Fong   <td>更改了位置和速度的描述
  * </table>
  */
 struct StateInfo
 {
+    double time{};  // 时间信息, GPS周秒
     std::vector<double> quaternion = std::vector<double>(4, 0.0);  // 姿态四元数
-    BaseMatrix rotation_mat = BaseMatrix(3, 3);  // e系到b系的旋转矩阵
-    std::vector<double> velocity = std::vector<double>(3, 0.0);  // e系下的速度
-    std::vector<double> pos = std::vector<double>(3, 0.0);  // e系下的位置
+    BaseMatrix rotation_mat = BaseMatrix(3, 3);  // e系到b系的姿态方向余弦矩阵
+    std::vector<double> velocity = std::vector<double>(3, 0.0);  // eecef系下的速度
+    std::vector<double> ecef_pos = std::vector<double>(3, 0.0);  // ecef系下的位置
+    std::vector<double> blh = std::vector<double>(3, 0.0);  // 大地坐标
 };
 
 /**@class   SinsMechanization
@@ -55,23 +58,29 @@ struct StateInfo
 class SinsMechanization
 {
   public:
-    int PrepareUpdate();  // 更新前准备
+    void Init(const StateInfo &initial_state);  // 状态初始化
+    int PrepareUpdate();  // 更新前准备, 将惯性传感器数据存储起来
     void AttitudeUpdate(const ImuData &imu_data);  // 姿态更新
     void VelocityUpdate(const ImuData &imu_data);  // 速度更新
     void PositionUpdate(const ImuData &imu_data);  // 位置更新
     int ImuMechanization(const ImuData &imu_data);  // 进行一次机械编排
   
     // get
+    double get_t() const;
     StateInfo get_cur_state() const;
   
   private:
     int cur_calendar{};  // 当前推算历元数
+    double t_{};  // 当前历元时间, GPS周秒
+    double delta_t_{};  // 当前历元和上一历元的时间间隔
     std::vector<double> ge_ = std::vector<double>(3, 0.0);  // e系下的重力加速度
     std::vector<double> omega_ie_e_ = std::vector<double>(3, 0.0);  // e系下的地球自转角速度
     
     StateInfo cur_state_{};  // 当前时刻位姿状态信息
     StateInfo last_state_{};  // 上一时刻位姿状态信息
     
+    ImuData cur_imu_data_{};  // 当前时刻传感器数据
+    ImuData last_imu_data_{};  // 上一时刻传感器数据
 };
 
 

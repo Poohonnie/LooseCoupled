@@ -43,6 +43,7 @@ class GnssPos
     // get
     double get_t() const;
     std::vector<double> get_pos() const;
+    
   private:
     double t_{};  // GPS周秒
     std::vector<double> pos_ = std::vector<double>(3, 0.0);  // 当前历元的位置

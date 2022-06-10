@@ -227,14 +227,14 @@ bool Config::ReadConfig(const std::string &filename)
  * @date        2022/5/29
  */
 std::string Config::ReadString(const char *section, const char *item,
-                               const char *default_value)
+                               const char *default_value) const
 {
     std::string tmp_s(section);
     std::string tmp_i(item);
     std::string def(default_value);
     std::map<std::string, std::string> k_v;
     std::map<std::string, std::string>::iterator it_item;
-    std::map<std::string, std::map<std::string, std::string> >::iterator it;
+    std::map<std::string, std::map<std::string, std::string> >::const_iterator it;
     it = settings_.find(tmp_s);
     if(it == settings_.end())
     {
@@ -262,13 +262,13 @@ std::string Config::ReadString(const char *section, const char *item,
  * @date        2022/5/29
  */
 int Config::ReadInt(const char *section, const char *item,
-                    const int &default_value)
+                    const int &default_value) const
 {
     std::string tmp_s(section);
     std::string tmp_i(item);
     std::map<std::string, std::string> k_v;
     std::map<std::string, std::string>::iterator it_item;
-    std::map<std::string, std::map<std::string, std::string> >::iterator it;
+    std::map<std::string, std::map<std::string, std::string> >::const_iterator it;
     it = settings_.find(tmp_s);
     if(it == settings_.end())
     {
@@ -294,13 +294,13 @@ int Config::ReadInt(const char *section, const char *item,
  * @date        2022/5/29
  */
 float Config::ReadFloat(const char *section, const char *item,
-                        const float &default_value)
+                        const float &default_value) const
 {
     std::string tmp_s(section);
     std::string tmp_i(item);
     std::map<std::string, std::string> k_v;
     std::map<std::string, std::string>::iterator it_item;
-    std::map<std::string, std::map<std::string, std::string> >::iterator it;
+    std::map<std::string, std::map<std::string, std::string> >::const_iterator it;
     it = settings_.find(tmp_s);
     if(it == settings_.end())
     {

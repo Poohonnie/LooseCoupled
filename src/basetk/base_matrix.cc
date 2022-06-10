@@ -135,9 +135,9 @@ BaseMatrix BaseMatrix::zeros(const int &row_num, const int &col_num)
  * @param[in]       vec             3维向量
  * @return          返回结果\n
  * - 向量维数为3      向量的3×3维的反对称矩阵\n
- * - 向量维数不为3     3×3维的单位阵\n
- * @author      Zing Fong
- * @date        2022/6/1
+ * - 向量维数不为3    3×3维的单位阵\n
+ * @author          Zing Fong
+ * @date            2022/6/1
  */
 BaseMatrix BaseMatrix::CalcAntisymmetryMat(const std::vector<double> &vec)
 {
@@ -158,6 +158,32 @@ BaseMatrix BaseMatrix::CalcAntisymmetryMat(const std::vector<double> &vec)
                vec.size());
         return eye(3);
     }
+}
+
+/**@brief           计算两个三维向量的外积
+ * @param[in]       vec1             3维向量
+ * @param[in]       vec2             3维向量
+ * @return          返回结果\n
+ * - 向量维数正确     两个向量的叉乘结果, 3×1的矩阵\n
+ * - 向量维数错误     3×1的全零矩阵\n
+ * @author          Zing Fong
+ * @date            2022/6/9
+ */
+BaseMatrix BaseMatrix::CrossProduct(const std::vector<double> &vec1,
+                                    const std::vector<double> &vec2)
+{
+    if(vec1.size() != 3 || vec2.size() != 3)
+    {
+        // 不是两个三维向量
+        printf("CrossProduct error!\n");
+        return BaseMatrix(3, 1);
+    }
+    BaseMatrix result(3, 1);
+    result.write(0, 0, vec1[1]*vec2[2] - vec1[2]*vec2[1]);
+    result.write(1, 0, -(vec1[0]*vec2[2] - vec1[2]*vec2[0]));
+    result.write(2, 0, vec1[0]*vec2[1] - vec1[1]*vec2[0]);
+    
+    return result;
 }
 
 /**@brief           矩阵显示函数

@@ -10,7 +10,6 @@
  * <table>
  * <tr><th>Date         <th>Version  <th>Author     <th>Description
  * <tr><td>2022/5/25    <td>1.0      <td>Zing Fong  <td>Initialize
- * <tr><td>2022/6/5     <td>1.1      <td>Zing Fong  <td>加入了矩阵求迹函数
  * </table>
  **********************************************************************************
  */
@@ -33,6 +32,8 @@
  * <tr><th>Date         <th>Author      <th>Description
  * <tr><td>2022/5/25    <td>Zing Fong   <td>Initialize
  * <tr><td>2022/5/31    <td>Zing Fong   <td>增加了求反对称矩阵的函数, 更改了默认构造函数
+ * <tr><td>2022/6/5     <td>Zing Fong   <td>加入了矩阵求迹函数
+ * <tr><td>2022/6/9     <td>Zing Fong   <td>增加了三维列向量叉乘函数
  * </table>
  */
 class BaseMatrix
@@ -43,10 +44,13 @@ class BaseMatrix
                const int &row_num, const int &col_num);  // 构造函数
     BaseMatrix(const int &row_num, const int &col_num);  // 全零矩阵构造函数
     BaseMatrix(const BaseMatrix &src);  // 拷贝构造函数
+    
     static BaseMatrix eye(const int &n);  // 单位阵
     static BaseMatrix zeros(const int &row_num, const int &col_num);  // 全零阵
     static BaseMatrix CalcAntisymmetryMat(
-            const std::vector<double> &vec);  // 求向量的反对称矩阵
+            const std::vector<double> &vec);  // 三维向量的反对称矩阵
+    static BaseMatrix CrossProduct(const std::vector<double> &vec1,
+                                   const std::vector<double> &vec2);  // 三维向量外积
     
     void disp(int width = 9, int precise = 4) const;  // 按照位宽和精度显示矩阵
     double read(const int &row, const int &col) const;  // 读取矩阵元素

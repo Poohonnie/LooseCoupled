@@ -31,6 +31,7 @@
  * <table>
  * <tr><th>Date         <th>Author      <th>Description
  * <tr><td>2022/5/28    <td>Zing Fong   <td>Initialize
+ * <tr><td>2022/6/7     <td>Zing Fong   <td>将参数读取函数更改为const
  * </table>
  */
 class Config
@@ -62,11 +63,11 @@ class Config
 public:
     bool ReadConfig(const std::string &filename);  // 读取配置文件并保存配置参数
     std::string ReadString(const char *section, const char *item,
-                           const char *default_value);  // 读取类型为string的参数
+                           const char *default_value) const;  // 读取类型为string的参数
     int ReadInt(const char *section, const char *item,
-                const int &default_value);  // 读取类型为int的参数
+                const int &default_value) const;  // 读取类型为int的参数
     float ReadFloat(const char *section, const char *item,
-                    const float &default_value);  // 读取类型为float的参数
+                    const float &default_value) const;  // 读取类型为float的参数
 
 private:
     bool isSpace(char c);  // 判断一个char类型变量是否为' '字符

@@ -18,7 +18,7 @@
 
 // c/c++系统文件
 #include <iostream>
-
+#include <fstream>
 // 其他库的 .h 文件
 #include <vector>
 
@@ -37,7 +37,7 @@
  */
 struct ImuData
 {
-    double time{};  // 时间
+    double t{};  // 时间, 秒数
     std::vector<double> acc = std::vector<double>(3, 0.0);  // 加表输出 初始为右前上b系
     std::vector<double> gyro = std::vector<double>(3, 0.0);  // 陀螺输出 初始为右前上b系
 };
@@ -56,12 +56,14 @@ class SinsFileStream
     int Init(const Config &config);  // 打开文件, 初始化
     int ReadImuFile();  // 读一个历元的IMU数据
     
+    ~SinsFileStream();
+    
     // get
     GpsTime get_time() const;
     ImuData get_raw_data() const;
     
   private:
-    FILE *imu_file_ptr_{};  // imu文件指针
+    FILE *file_ptr_{};  // imu文件指针
     GpsTime time_{};  // 时间
     ImuData raw_data_{};  // imu原始数据 右前上b系
     

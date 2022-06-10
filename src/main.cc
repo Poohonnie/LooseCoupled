@@ -5,7 +5,7 @@
  * <tr><th>Source   <td>https://github.com/Poohonnie/LooseCoupled
  * </table>
  * @section   项目详细描述
- * 通过读取GNSS o文件和p文件，进行RTK解算。再通过读取SINS imr文件，利用结算出来的RTK结果，进行松组合解算。
+ * 通过读取GNSS pos文件，获取载体的ECEF坐标。再通过读取SINS imr文件，与GNSS解算结果进行松组合解算。
  *
  * @section   功能描述  
  * -# 功能1
@@ -17,23 +17,23 @@
  * 
  * @section   软件更新
  * <table>
- * <tr><th>Date        <th>Version    <th>Author      <th>Description </tr>
- * <tr><td>2018/08/17  <td>1.0          <td>Zing Fong   <td>创建初始版本  </tr>
+ * <tr><th>Date         <th>Version         <th>Author      <th>Description </tr>
+ * <tr><td>2022/6/7     <td>1.0             <td>Zing Fong   <td>创建初始版本  </tr>
  * </table>
  **********************************************************************************
  */
-#include <iostream>
 
 #include <iostream>
 #include "basetk/base_app.h"
 #include "basetk/base_matrix.h"
 #include "basetk/base_math.h"
 #include <fstream>
-#include <cassert>
 
 int main()
 {
-    std::cout << BaseMath::max({5, 0, 9, -1, 112, 114514});
+
+
+
 //    Config config{};
 //    bool ret = config.ReadConfig("config.ini");
 //    if (!ret)
