@@ -27,13 +27,16 @@
 #include "basetk/base_app.h"
 #include "basetk/base_matrix.h"
 #include "basetk/base_math.h"
+#include "tester.h"
 #include <fstream>
 
 int main()
 {
-
-
-
+    std::vector<double> q{0.5, 0.5, 0.5, 0.5};
+    std::vector<double> rotation_vec = BaseMath::Quaternion2RotationVec(q);
+    std::cout << rotation_vec[0] << ' ' << rotation_vec[1] << ' ' << rotation_vec[2] << std::endl;
+    q = BaseMath::RotationVec2Quaternion(rotation_vec);
+    printf("%f %f %f %f\n", q[0], q[1], q[2], q[3]);
 //    Config config{};
 //    bool ret = config.ReadConfig("config.ini");
 //    if (!ret)

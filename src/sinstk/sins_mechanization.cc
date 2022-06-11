@@ -27,11 +27,14 @@
 /**@brief       状态初始化
  * @param[in]   initial_state          载体的初始状态量
  * @author      Zing Fong
- * @date        2022/6/9
+ * @date        2022/6/10
  */
 void SinsMechanization::Init(const StateInfo &initial_state)
 {
-
+    cur_state_ = initial_state;
+    t_ = cur_state_.time;
+    cur_calendar = 1;  // 第一个历元
+    
 
 }
 

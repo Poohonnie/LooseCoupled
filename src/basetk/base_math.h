@@ -33,13 +33,14 @@
  * <table>
  * <tr><th>Date         <th>Author      <th>Description
  * <tr><td>2022/5/27    <td>Zing Fong   <td>Initialize
+ * <tr><td>2022/6/10    <td>Zing Fong   <td>将max和min函数的参数类型更改为vector
  * </table>
  */
 class BaseMath
 {
   public:
-    static double max(std::initializer_list<double> list);  // 求最大值
-    static double min(std::initializer_list<double> list);  // 求最小值
+    static double max(const std::vector<double> &list);  // 求最大值
+    static double min(const std::vector<double> &list);  // 求最小值
     
     // 坐标转换函数
     static std::vector<double> XyzAdd(const std::vector<double> &add_xyz1,

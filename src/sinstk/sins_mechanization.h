@@ -58,6 +58,8 @@ struct StateInfo
 class SinsMechanization
 {
   public:
+    SinsMechanization() = default;  // 默认构造函数
+    
     void Init(const StateInfo &initial_state);  // 状态初始化
     int PrepareUpdate();  // 更新前准备, 将惯性传感器数据存储起来
     void AttitudeUpdate(const ImuData &imu_data);  // 姿态更新

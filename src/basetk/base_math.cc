@@ -31,9 +31,11 @@
  * @author      Zing Fong
  * @date        2022/6/5
  */
-double BaseMath::max(std::initializer_list<double> list)
+double BaseMath::max(const std::vector<double> &list)
 {
-    double max_num{};
+    if(list.empty())  // 为空 则返回奇怪的值
+        return -114.514;
+    double max_num = list[0];
     for(const auto &a_list: list)
         max_num = max_num > a_list ? max_num : a_list;
     return max_num;
@@ -45,9 +47,11 @@ double BaseMath::max(std::initializer_list<double> list)
  * @author      Zing Fong
  * @date        2022/6/5
  */
-double BaseMath::min(std::initializer_list<double> list)
+double BaseMath::min(const std::vector<double> &list)
 {
-    double min_num{};
+    if(list.empty())  // 为空 则返回奇怪的值
+        return -114.514;
+    double min_num = list[0];
     for(const auto &a_list: list)
         min_num = min_num < a_list ? min_num : a_list;
     return min_num;
@@ -113,8 +117,8 @@ std::vector<double> BaseMath::Blh2Xyz(const std::vector<double> &blh,
             coor_sys.kA/sqrt(1 - coor_sys.kESquare*sin(B)*sin(B));  // 卯酉圈曲率半径
     //PPT 1-4 20页 公式
     xyz[0] = (N + H)*cos(B)*cos(L);
-    xyz[0] = (N + H)*cos(B)*sin(L);
-    xyz[0] = (N*(1 - coor_sys.kESquare) + H)*sin(B);
+    xyz[1] = (N + H)*cos(B)*sin(L);
+    xyz[2] = (N*(1 - coor_sys.kESquare) + H)*sin(B);
     
     return xyz;
 }
@@ -133,29 +137,33 @@ std::vector<double> BaseMath::Xyz2Blh(const std::vector<double> &xyz,
     if(sqrt(xyz[0]*xyz[0] + xyz[1]*xyz[1] + xyz[2]*xyz[2]) < 1e+6)
         // 不在地球表面，认定为异常数值
         return blh;
+    const double &x = xyz[0];
+    const double &y = xyz[1];
+    const double &z = xyz[2];
     double x2 = xyz[0]*xyz[0];
     double y2 = xyz[1]*xyz[1];
     double z2 = xyz[2]*xyz[2];  // 把各值平方求出来方便后面计算
     
     double deltaZ = 0;  // 赋初值
     double deltaZ1 = coor_sys.kESquare*xyz[2];  // deltaZ n+1
-    double sinB = ((xyz[2] + deltaZ1) + 1e-6)/(1e-6 +
-                    sqrt(x2 + y2 + (xyz[2] + deltaZ1)*(xyz[2] + deltaZ1)));
+    double sinB = ((z + deltaZ1) + 1e-6)/(1e-6 +
+                                          sqrt(x2 + y2 +
+                                               (z + deltaZ1)*(z + deltaZ1)));
     double N = coor_sys.kA/sqrt(1 - coor_sys.kESquare*sinB*sinB);
     
-    blh[1] = atan2(xyz[1], xyz[0]);  // 注意L取值范围，这里要用atan2
+    blh[1] = atan2(y, x);  // 注意L取值范围，这里要用atan2
     
     for(int i = 0; i < 12 && fabs(deltaZ - deltaZ1) > 1e-10; ++i)
     {
         deltaZ = deltaZ1;
-        sinB = (xyz[2] + deltaZ)/
-               sqrt(x2 + y2 + (xyz[2] + deltaZ)*(xyz[2] + deltaZ));
+        sinB = (z + deltaZ)/
+               sqrt(x2 + y2 + (z + deltaZ)*(z + deltaZ));
         N = coor_sys.kA/sqrt(1 - coor_sys.kESquare*sinB*sinB);
         deltaZ1 = N*coor_sys.kESquare*sinB;
         
     }  // 迭代求ΔZ
-    blh[0] = atan2(xyz[2] + deltaZ, sqrt(x2 + y2));
-    blh[2] = sqrt(x2 + y2 + (xyz[2] + deltaZ)*(xyz[2] + deltaZ)) - N;
+    blh[0] = atan2(z + deltaZ, sqrt(x2 + y2));
+    blh[2] = sqrt(x2 + y2 + (z + deltaZ)*(z + deltaZ)) - N;
     
     return blh;
 }
@@ -258,8 +266,8 @@ std::vector<double> BaseMath::QuaternionMul(
 double BaseMath::Norm(const std::vector<double> &vector)
 {
     double norm{};
-    for(const auto a_vector: vector)
-        norm += a_vector*a_vector;  // 平方和
+    for(const auto &a_vec: vector)
+        norm += a_vec*a_vec;  // 平方和
     norm = sqrt(norm);
     
     return norm;
@@ -273,7 +281,7 @@ double BaseMath::Norm(const std::vector<double> &vector)
 void BaseMath::Normalize(std::vector<double> &vector)
 {
     double norm = Norm(vector);;  // 取模
-    for(auto a_vec: vector)
+    for(auto &a_vec: vector)
         a_vec /= norm;
 }
 
@@ -287,7 +295,7 @@ void BaseMath::QuaternionNormalize(std::vector<double> &quaternion)
     if(quaternion[0] < 0)
     {
         // 四元数实部为负
-        for(auto a_q: quaternion)
+        for(auto &a_q: quaternion)
             a_q = -a_q;
     }
     Normalize(quaternion);
@@ -531,7 +539,7 @@ std::vector<double> BaseMath::Quaternion2RotationVec(
     double f = sin(half_phi_norm)/(2*half_phi_norm);
     double pi = BaseSdc::kPi;  // 方便书写
     if(q1 == 0)
-        return std::vector<double>{q2/pi, q3/pi, q4/pi};
+        return std::vector<double>{q2*pi, q3*pi, q4*pi};
     else
         return std::vector<double>{q2/f, q3/f, q4/f};
 }
@@ -553,10 +561,9 @@ std::vector<double> BaseMath::RotationVec2Quaternion(
     }
     const std::vector<double> &phi = rotation_vec;  // 方便书写
     std::vector<double> q(4, 0.0);  // 返回的结果
-    double half_phi_norm = 0.5*Norm(phi);
-    double cos_half_phi_norm = cos(half_phi_norm);
-    double f = sin(half_phi_norm)/(2*half_phi_norm);  // 注意这里把书上公式里的0.5约掉了
-    q[0] = cos_half_phi_norm;
+    double phi_norm = Norm(phi);
+    double f = sin(0.5*phi_norm)/(phi_norm);  // 注意这里把书上公式里的0.5约掉了
+    q[0] = cos(0.5*phi_norm);
     q[1] = f*phi[0];
     q[2] = f*phi[1];
     q[3] = f*phi[2];
