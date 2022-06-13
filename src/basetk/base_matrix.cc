@@ -167,24 +167,71 @@ BaseMatrix BaseMatrix::CalcAntisymmetryMat(const std::vector<double> &vec)
  * - 向量维数正确     两个向量的叉乘结果, 3×1的矩阵\n
  * - 向量维数错误     3×1的全零矩阵\n
  * @author          Zing Fong
- * @date            2022/6/9
+ * @date            2022/6/12
  */
-BaseMatrix BaseMatrix::CrossProduct(const std::vector<double> &vec1,
-                                    const std::vector<double> &vec2)
+std::vector<double> BaseMatrix::CrossProduct(const std::vector<double> &vec1,
+                                             const std::vector<double> &vec2)
 {
     if(vec1.size() != 3 || vec2.size() != 3)
     {
         // 不是两个三维向量
         printf("CrossProduct error!\n");
-        return BaseMatrix(3, 1);
+        return std::vector<double>(3, 0.0);
     }
-    BaseMatrix result(3, 1);
-    result.write(0, 0, vec1[1]*vec2[2] - vec1[2]*vec2[1]);
-    result.write(1, 0, -(vec1[0]*vec2[2] - vec1[2]*vec2[0]));
-    result.write(2, 0, vec1[0]*vec2[1] - vec1[1]*vec2[0]);
+    std::vector<double> result(3, 0.0);
+    result[0] = vec1[1]*vec2[2] - vec1[2]*vec2[1];
+    result[1] = -(vec1[0]*vec2[2] - vec1[2]*vec2[0]);
+    result[2] = vec1[0]*vec2[1] - vec1[1]*vec2[0];
     
     return result;
 }
+
+/**@brief           向量加法
+ * @param[in]       vec1            待求和向量1
+ * @param[in]       vec2            待求和向量2
+ * @return          两个向量的和
+ * @author          Zing Fong
+ * @date            2022/6/12
+ */
+std::vector<double> BaseMatrix::VectorAdd(const std::vector<double> &vec1,
+                                          const std::vector<double> &vec2)
+{
+    if(vec1.empty() || vec2.empty() || vec1.size() != vec2.size())
+    {
+        // 保证两个向量都不为空且维数相同
+        printf("VectorAdd error. vector1 size: %d vector2 size: %d",
+               vec1.size(), vec2.size());
+        return {};  //
+    }
+    std::vector<double> result(vec1.size(), 0.0);
+    for(int i = 0; i < vec1.size(); ++i)
+        result[i] = vec1[i] + vec2[i];
+    return result;
+}
+
+/**@brief           向量加法
+ * @param[in]       vec1            被减数向量
+ * @param[in]       vec2            减数向量
+ * @return          两个向量的差
+ * @author          Zing Fong
+ * @date            2022/6/12
+ */
+std::vector<double> BaseMatrix::VectorSub(const std::vector<double> &vec1,
+                                          const std::vector<double> &vec2)
+{
+    if(vec1.empty() || vec2.empty() || vec1.size() != vec2.size())
+    {
+        // 保证两个向量都不为空且维数相同
+        printf("VectorSub error. vector1 size: %d vector2 size: %d",
+               vec1.size(), vec2.size());
+        return {};  //
+    }
+    std::vector<double> result(vec1.size(), 0.0);
+    for(int i = 0; i < vec1.size(); ++i)
+        result[i] = vec1[i] - vec2[i];
+    return result;
+}
+
 
 /**@brief           矩阵显示函数
  * @param[in]       width            输出位宽, 默认为9

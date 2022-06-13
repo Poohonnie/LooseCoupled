@@ -34,6 +34,7 @@
  * <tr><th>Date         <th>Author      <th>Description
  * <tr><td>2022/5/27    <td>Zing Fong   <td>Initialize
  * <tr><td>2022/6/10    <td>Zing Fong   <td>将max和min函数的参数类型更改为vector
+ * <tr><td>2022/6/12    <td>Zing Fong   <td>增加了计算n系重力加速度矢量的函数
  * </table>
  */
 class BaseMath
@@ -53,8 +54,8 @@ class BaseMath
                                        CoorSys coor_sys);  // 地心地固坐标转大地坐标
     static double Deg2Rad(const int &deg,
                           const int &min, const double &sec);  // 度分秒转弧度
-    static std::vector<double> CalcEnu(const std::vector<double> &ref_xyz,
-                                       const std::vector<double> &station_xyz);  // 计算测站在参考坐标下的ENU坐标(误差)
+    static std::vector<double> Ecef2Enu(const std::vector<double> &ref_xyz,
+                                        const std::vector<double> &station_xyz);  // 计算测站在参考坐标下的ENU坐标(误差)
     
     // 四元数相关运算
     static std::vector<double> QuaternionMul(
@@ -88,9 +89,8 @@ class BaseMath
     static std::vector<double> RotationMat2RotationVec(
             const BaseMatrix &rotation_mat);  // 旋转矩阵转旋转矢量
     
-    // e系下的重力加速度矢量计算
-    static std::vector<double> Calc_ge(const std::vector<double> &blh);
-    
+    static std::vector<double> CalcGe(const std::vector<double> &blh);  // e系下的重力加速度矢量计算
+    static std::vector<double> CalcGn(const std::vector<double> &blh);  // n系吓得重力加速度计算
 };
 
 

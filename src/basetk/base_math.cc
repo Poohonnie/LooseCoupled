@@ -10,6 +10,7 @@
  * <table>
  * <tr><th>Date         <th>Version  <th>Author     <th>Description
  * <tr><td>2022/6/5     <td>1.0      <td>Zing Fong  <td>Initialize
+ * <tr><td>2022/6/11    <td>1.0      <td>Zing Fong  <td>修正了四元数和旋转矢量的转换函数
  * </table>
  **********************************************************************************
  */
@@ -194,14 +195,14 @@ double BaseMath::Deg2Rad(const int &deg, const int &min,
  * @author      Zing Fong
  * @date        2022/6/2
  */
-std::vector<double> BaseMath::CalcEnu(const std::vector<double> &ref_xyz,
-                                      const std::vector<double> &station_xyz)
+std::vector<double> BaseMath::Ecef2Enu(const std::vector<double> &ref_xyz,
+                                       const std::vector<double> &station_xyz)
 {
     std::vector<double> d_enu(3, 0.0);
     
     if(ref_xyz.size() != 3 || station_xyz.size() != 3)
         // 输入格式错误
-        printf("CalcEnu error!");
+        printf("Ecef2Enu error!");
     std::vector<double> ref_blh = Xyz2Blh(ref_xyz, BaseSdc::wgs84);
     std::vector<double> d_xyz(3, 0.0);
     d_xyz[0] = station_xyz[0] - ref_xyz[0];
@@ -355,7 +356,7 @@ std::vector<double> BaseMath::RotationMat2Euler(const BaseMatrix &rotation_mat)
     if(rotation_mat.get_col_num() != 3 || rotation_mat.get_row_num() != 3)
     {
         // 传入参数错误
-        printf("RotationMat2Euler error. rotation_mat size: %d×%d\n",
+        printf("RotationMat2Euler error. rotation size: %d×%d\n",
                rotation_mat.get_row_num(), rotation_mat.get_col_num());
         return std::vector<double>(3, 0.0);
     }
@@ -522,7 +523,7 @@ std::vector<double> BaseMath::RotationMat2Quaternion(
  * @param[in]   quaternion          待转换的四元数
  * @return      转换得到的旋转矢量
  * @author      Zing Fong
- * @date        2022/6/5
+ * @date        2022/6/11
  */
 std::vector<double> BaseMath::Quaternion2RotationVec(
         const std::vector<double> &quaternion)
@@ -535,20 +536,22 @@ std::vector<double> BaseMath::Quaternion2RotationVec(
     }
     const std::vector<double> &q = quaternion;
     const double &q1 = q[0], &q2 = q[1], &q3 = q[2], &q4 = q[3];  // 方便书写
-    double half_phi_norm = sqrt(q2*q2 + q3*q3 + q4*q4)/q1;  // 模长的一半
-    double f = sin(half_phi_norm)/(2*half_phi_norm);
+    double half_phi_norm = acos(q1);  // 模长的一半
+    if(fabs(half_phi_norm) < 1e-12)  // 旋转矢量为0, 直接返回
+        return std::vector<double>{0.0, 0.0, 0.0};
+    double f = 2*half_phi_norm/sin(half_phi_norm);
     double pi = BaseSdc::kPi;  // 方便书写
     if(q1 == 0)
         return std::vector<double>{q2*pi, q3*pi, q4*pi};
     else
-        return std::vector<double>{q2/f, q3/f, q4/f};
+        return std::vector<double>{q2*f, q3*f, q4*f};
 }
 
 /**@brief       旋转矢量转四元数
  * @param[in]   rotation_vec          待转换的旋转矢量
  * @return      转换得到的四元数
  * @author      Zing Fong
- * @date        2022/6/5
+ * @date        2022/6/11
  */
 std::vector<double> BaseMath::RotationVec2Quaternion(
         const std::vector<double> &rotation_vec)
@@ -562,6 +565,8 @@ std::vector<double> BaseMath::RotationVec2Quaternion(
     const std::vector<double> &phi = rotation_vec;  // 方便书写
     std::vector<double> q(4, 0.0);  // 返回的结果
     double phi_norm = Norm(phi);
+    if(fabs(phi_norm) < 1e-12)  // 旋转矢量为0, 直接返回
+        return std::vector<double>{1.0, 0.0, 0.0, 0.0};
     double f = sin(0.5*phi_norm)/(phi_norm);  // 注意这里把书上公式里的0.5约掉了
     q[0] = cos(0.5*phi_norm);
     q[1] = f*phi[0];
@@ -622,11 +627,11 @@ std::vector<double> BaseMath::RotationMat2RotationVec(
  * @author      Zing Fong
  * @date        2022/6/5
  */
-std::vector<double> BaseMath::Calc_ge(const std::vector<double> &blh)
+std::vector<double> BaseMath::CalcGe(const std::vector<double> &blh)
 {
     if(blh.size() != 3)
     {
-        printf("Calc_ge error.\n");
+        printf("CalcGe error.\n");
         return std::vector<double>(3, 0.0);
     }
     double g0 = 9.7803267715;
@@ -646,5 +651,35 @@ std::vector<double> BaseMath::Calc_ge(const std::vector<double> &blh)
     ge[1] = sin(l)*cos(b)*(-g);
     ge[2] = sin(b)*(-g);
     return ge;
+}
+
+/**@brief       n系下的重力加速度矢量计算
+ * @param[in]   blh          已知大地坐标BLH
+ * @return      n系下的重力加速度矢量
+ * @author      Zing Fong
+ * @date        2022/6/12
+ */
+std::vector<double> BaseMath::CalcGn(const std::vector<double> &blh)
+{
+    double g_a = 9.7803267715;  // 赤道重力加速度
+    double g_b = 9.8321863685;  // 极点重力加速度
+    const double &B = blh[0];
+    const double &L = blh[1];
+    const double &H = blh[2];
+    const double &a = BaseSdc::wgs84.kA;  // 地球长半轴
+    const double &b = BaseSdc::wgs84.kB;  // 地球短半轴
+    const double &gm = BaseSdc::wgs84.kGm;
+    const double &f = BaseSdc::wgs84.kF;
+    const double &omega_e = BaseSdc::wgs84.kOmega;
+    const double &e_2 = BaseSdc::wgs84.kESquare;  // 第一偏心率的平方
+    double m = omega_e*omega_e*a*a*b/gm;
+    
+    double g_phi = (a*g_a*cos(B)*cos(B) + b*g_b*sin(B)*sin(B))/
+            sqrt(a*a*cos(B)*cos(B) + b*b*sin(B)*sin(B));
+    double g = g_phi*(1 - 2.0/a*(1 + f + m - 2*f*sin(B)*sin(B))*H +
+            3.0/(a*a)*H*H);
+    std::vector<double> g_n = {0.0, 0.0, g};
+    return g_n;
+
 }
 

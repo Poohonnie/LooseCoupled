@@ -96,7 +96,7 @@ void BaseMathTester::AttitudeTransformationTester()
            euler[0]*BaseSdc::kR2D, euler[1]*BaseSdc::kR2D,
            euler[2]*BaseSdc::kR2D);  // 先打印出初始欧拉角
     std::vector<double> euler_result = euler;  // 最后转换结果
-    for(int i = 0; i < 1000; ++i)
+    for(int i = 0; i < 10000; ++i)
     {
         // 正向转换
         BaseMatrix rotation_mat = BaseMath::Euler2RotationMat(
@@ -105,14 +105,14 @@ void BaseMathTester::AttitudeTransformationTester()
                 rotation_mat);  // 四元数
         std::vector<double> euler_tmp = BaseMath::Quaternion2Euler(q);  // 欧拉角
         q = BaseMath::Euler2Quaternion(euler_tmp);  // 欧拉角转四元数
-//        std::vector<double> rotation_vec = BaseMath::Quaternion2RotationVec(
-//                q);  // 旋转矢量
-//
-//        // 逆向转换
-//        q = BaseMath::RotationVec2Quaternion(rotation_vec);
+        std::vector<double> rotation_vec = BaseMath::Quaternion2RotationVec(
+                q);  // 旋转矢量
+
+        // 逆向转换
+        q = BaseMath::RotationVec2Quaternion(rotation_vec);
         rotation_mat = BaseMath::Quaternion2RotationMat(q);
-//        rotation_vec = BaseMath::RotationMat2RotationVec(rotation_mat);
-//        rotation_mat = BaseMath::RotationVec2RotationMat(rotation_vec);
+        rotation_vec = BaseMath::RotationMat2RotationVec(rotation_mat);
+        rotation_mat = BaseMath::RotationVec2RotationMat(rotation_vec);
         euler_result = BaseMath::RotationMat2Euler(rotation_mat);
     }
     printf("euler angle error: %12.8f %12.8f %12.8f\n",

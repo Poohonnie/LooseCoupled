@@ -34,6 +34,7 @@
  * <tr><td>2022/5/31    <td>Zing Fong   <td>增加了求反对称矩阵的函数, 更改了默认构造函数
  * <tr><td>2022/6/5     <td>Zing Fong   <td>加入了矩阵求迹函数
  * <tr><td>2022/6/9     <td>Zing Fong   <td>增加了三维列向量叉乘函数
+ * <tr><td>2022/6/12    <td>Zing Fong   <td>增加了向量加减法
  * </table>
  */
 class BaseMatrix
@@ -49,8 +50,13 @@ class BaseMatrix
     static BaseMatrix zeros(const int &row_num, const int &col_num);  // 全零阵
     static BaseMatrix CalcAntisymmetryMat(
             const std::vector<double> &vec);  // 三维向量的反对称矩阵
-    static BaseMatrix CrossProduct(const std::vector<double> &vec1,
+    static std::vector<double> CrossProduct(const std::vector<double> &vec1,
                                    const std::vector<double> &vec2);  // 三维向量外积
+    static std::vector<double> VectorAdd(const std::vector<double> &vec1,
+                                         const std::vector<double> &vec2);  // 向量加法
+    static std::vector<double> VectorSub(const std::vector<double> &vec1,
+                                const std::vector<double> &vec2);  // 向量减法
+    
     
     void disp(int width = 9, int precise = 4) const;  // 按照位宽和精度显示矩阵
     double read(const int &row, const int &col) const;  // 读取矩阵元素
