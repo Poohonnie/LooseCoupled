@@ -41,9 +41,9 @@ struct StateInfo
 {
     double time{};  // 时间信息, GPS周秒
     std::vector<double> q = std::vector<double>(4, 0.0);  // 姿态四元数
-    BaseMatrix rotation = BaseMatrix(3, 3);  // e系到b系的姿态方向余弦矩阵
+    BaseMatrix c_b_n = BaseMatrix(3, 3);  // 姿态方向余弦矩阵
     std::vector<double> v_ecef = std::vector<double>(3, 0.0);  // ECEF系下的速度
-    std::vector<double> v_enu = std::vector<double>(3, 0.0);  // ENU系下的速度
+    std::vector<double> v_ned = std::vector<double>(3, 0.0);  // n系下的速度(NED)
     std::vector<double> xyz = std::vector<double>(3, 0.0);  // ECEF系下的位置
     std::vector<double> blh = std::vector<double>(3, 0.0);  // 大地坐标
 };
@@ -80,9 +80,14 @@ class SinsMechanization
     double t_{};  // 当前历元时间, GPS周秒
     double delta_t_{};  // 当前历元和上一历元的时间间隔
     
+    double r_m_{};  // 子午圈半径
+    double r_n_{};  // 卯酉圈半径
+    double r_m_ksub1_{};  // k-1时刻子午圈半径
+    double r_n_ksub1_{};  // k-1时刻卯酉圈半径
+    
     std::vector<double> g_n_ = std::vector<double>(3, 0.0);  // n系下的重力加速度
-    std::vector<double> g_n_ksub1 = std::vector<double>(3, 0.0);  // k-1时刻n系下的重力加速度
-    std::vector<double> g_n_ksub2 = std::vector<double>(3, 0.0);  // k-2时刻n系下的重力加速度
+    std::vector<double> g_n_ksub1_ = std::vector<double>(3, 0.0);  // k-1时刻n系下的重力加速度
+    std::vector<double> g_n_ksub2_ = std::vector<double>(3, 0.0);  // k-2时刻n系下的重力加速度
     
     std::vector<double> omega_ie_n_ = std::vector<double>(3, 0.0);  // e系下的地球自转角速度
     std::vector<double> omega_en_n_ = std::vector<double>(3, 0.0);

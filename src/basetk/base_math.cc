@@ -195,14 +195,17 @@ double BaseMath::Deg2Rad(const int &deg, const int &min,
  * @author      Zing Fong
  * @date        2022/6/2
  */
-std::vector<double> BaseMath::Ecef2Enu(const std::vector<double> &ref_xyz,
+std::vector<double> BaseMath::CalcDenu(const std::vector<double> &ref_xyz,
                                        const std::vector<double> &station_xyz)
 {
-    std::vector<double> d_enu(3, 0.0);
-    
     if(ref_xyz.size() != 3 || station_xyz.size() != 3)
+    {
         // 输入格式错误
-        printf("Ecef2Enu error!");
+        printf("CalcDenu error!");
+        return std::vector<double>(3, 0.0);
+    }
+    
+    std::vector<double> d_enu(3, 0.0);
     std::vector<double> ref_blh = Xyz2Blh(ref_xyz, BaseSdc::wgs84);
     std::vector<double> d_xyz(3, 0.0);
     d_xyz[0] = station_xyz[0] - ref_xyz[0];
@@ -217,6 +220,50 @@ std::vector<double> BaseMath::Ecef2Enu(const std::vector<double> &ref_xyz,
                cos(ref_blh[0])*sin(ref_blh[1])*d_xyz[1]
                + sin(ref_blh[0])*d_xyz[2];
     return d_enu;
+}
+
+/**@brief       NED坐标转ENU坐标
+ * @param[in]   ned             NED系坐标
+ * @return      转换后的ENU系坐标
+ * @author      Zing Fong
+ * @date        2022/6/14
+ */
+std::vector<double> BaseMath::Ned2Enu(const std::vector<double> &ned)
+{
+    std::vector<double> enu(3, 0.0);
+    if(ned.size() != 3)
+    {
+        // 输入格式错误
+        printf("Ned2Enu error!");
+        return std::vector<double>(3, 0.0);
+    }
+    enu[0] = ned[1];  // E
+    enu[1] = ned[0];  // N
+    enu[2] = -ned[2];  // U
+    
+    return enu;
+}
+
+/**@brief       ENU坐标转NED坐标
+ * @param[in]   enu             ENU系坐标
+ * @return      转换后的NED系坐标
+ * @author      Zing Fong
+ * @date        2022/6/14
+ */
+std::vector<double> BaseMath::Enu2Ned(const std::vector<double> &enu)
+{
+    std::vector<double> ned(3, 0.0);
+    if(enu.size() != 3)
+    {
+        // 输入格式错误
+        printf("Enu2Ned error!");
+        return std::vector<double>(3, 0.0);
+    }
+    ned[0] = enu[1];  // N
+    ned[1] = enu[0];  // E
+    ned[2] = -enu[2];  // D
+    
+    return ned;
 }
 
 /**@brief       四元数乘法
@@ -356,7 +403,7 @@ std::vector<double> BaseMath::RotationMat2Euler(const BaseMatrix &rotation_mat)
     if(rotation_mat.get_col_num() != 3 || rotation_mat.get_row_num() != 3)
     {
         // 传入参数错误
-        printf("RotationMat2Euler error. rotation size: %d×%d\n",
+        printf("RotationMat2Euler error. c_b_n size: %d×%d\n",
                rotation_mat.get_row_num(), rotation_mat.get_col_num());
         return std::vector<double>(3, 0.0);
     }
@@ -682,4 +729,3 @@ std::vector<double> BaseMath::CalcGn(const std::vector<double> &blh)
     return g_n;
 
 }
-

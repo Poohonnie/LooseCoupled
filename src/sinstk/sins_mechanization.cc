@@ -59,8 +59,13 @@ int SinsMechanization::PrepareUpdate(const ImuData &imu_data)
     ksub1_imu_data_ = cur_imu_data_;
     cur_imu_data_ = imu_data;
     
-    g_n_ksub2 = g_n_ksub1;
-    g_n_ksub1 = g_n_;
+    r_m_ksub1_ = r_m_;
+    r_m_ = {};
+    r_n_ksub1_ = r_n_;
+    r_n_ = {};
+    
+    g_n_ksub2_ = g_n_ksub1_;
+    g_n_ksub1_ = g_n_;
     g_n_ = {};
     
     omega_en_n_ksub2_ = omega_en_n_ksub1_;
@@ -76,35 +81,36 @@ int SinsMechanization::PrepareUpdate(const ImuData &imu_data)
     const double &omega_e = BaseSdc::wgs84.kOmega;
     const double &phi = cur_state_.blh[0];  // 纬度
     const double &h = cur_state_.blh[2];  // 高程
-    const double &v_e = cur_state_.v_enu[0];  // 东向速度
-    const double &v_n = cur_state_.v_enu[1];  // 北向速度
+    const double &v_e = cur_state_.v_ned[1];  // 东向速度  2022/6/14更改为NED
+    const double &v_n = cur_state_.v_ned[0];  // 北向速度
     
-    // 求两个不知道啥名的omega, 一个可能是地球自转角速度
-    double r_m = a*(1 - e_2)/
-                 sqrt(pow(1 - e_2*sin(phi)*sin(phi), 3));
-    double r_n = a/sqrt(1 - e_2*sin(phi)*sin(phi));
+    // 求子午圈半径和卯酉圈半径, 以及两个不知道啥名的omega, 一个可能是地球自转角速度
+    r_m_ = a*(1 - e_2)/
+           sqrt(pow(1 - e_2*sin(phi)*sin(phi), 3));
+    r_n_ = a/sqrt(1 - e_2*sin(phi)*sin(phi));
     
     omega_ie_n_[0] = omega_e*cos(phi);
     omega_ie_n_[1] = 0;
     omega_ie_n_[2] = -omega_e*sin(phi);
     
-    omega_en_n_[0] = v_e/(r_n + h);
-    omega_en_n_[1] = -v_n/(r_m + h);
-    omega_en_n_[2] = -v_e*tan(phi)/(r_n + h);
+    omega_en_n_[0] = v_e/(r_n_ + h);
+    omega_en_n_[1] = -v_n/(r_m_ + h);
+    omega_en_n_[2] = -v_e*tan(phi)/(r_n_ + h);
     
     g_n_ = BaseMath::CalcGn(cur_state_.blh);  // 计算e系下的重力加速度
     
     // 时间
-    t_ = imu_data.t;
-    cur_state_.time = t_;
-    delta_t_ = cur_state_.time - ksub1_state_.time;  // 时间间隔
+    cur_state_.time = t_ = imu_data.t;
+    delta_t_ = cur_state_.time - ksub1_state_.time;  // 当前历元与上一历元时间间隔
     
     if(cur_epoch_ == 1)
     {
         // 说明是第一个历元, 前两个历元数据与当前历元统一
         ksub2_state_ = ksub1_state_ = cur_state_;
         ksub1_imu_data_ = cur_imu_data_;
-        g_n_ksub2 = g_n_ksub1 = g_n_;
+        r_m_ksub1_ = r_m_;
+        r_n_ksub1_ = r_n_;
+        g_n_ksub2_ = g_n_ksub1_ = g_n_;
         omega_en_n_ksub2_ = omega_en_n_ksub1_ = omega_en_n_;
         omega_ie_n_ksub2_ = omega_ie_n_ksub1_ = omega_ie_n_;
         delta_t_ = 0;
@@ -165,7 +171,7 @@ void SinsMechanization::AttitudeUpdate()
     auto tmp = BaseMath::QuaternionMul(q_nksub1_nk,
                                        ksub1_state_.q);
     cur_state_.q = BaseMath::QuaternionMul(tmp, q_bk_bksub1);
-    cur_state_.rotation = BaseMath::Quaternion2RotationMat(
+    cur_state_.c_b_n = BaseMath::Quaternion2RotationMat(
             cur_state_.q);  // 方向余弦矩阵
 }
 
@@ -174,7 +180,7 @@ void SinsMechanization::AttitudeUpdate()
  * - 已知: 上一历元速度、上一历元和当前历元加速度输出\n
  * - 待求: 当前历元速度
  * @author      Zing Fong
- * @date        2022/6/13
+ * @date        2022/6/14
  */
 void SinsMechanization::VelocityUpdate()
 {
@@ -184,9 +190,9 @@ void SinsMechanization::VelocityUpdate()
     auto omega_en_n_mid = LinearExtrapolation(omega_en_n_ksub1_,
                                               omega_en_n_ksub2_);
     // 对速度作线性外推, 计算tk-1/2时刻的速度
-    auto v_n_mid = LinearExtrapolation(ksub1_state_.v_enu, ksub2_state_.v_enu);
+    auto v_n_mid = LinearExtrapolation(ksub1_state_.v_ned, ksub2_state_.v_ned);
     // 线性外推计算tk-1/2时刻的重力
-    auto g_n_mid = LinearExtrapolation(g_n_ksub1, g_n_ksub2);
+    auto g_n_mid = LinearExtrapolation(g_n_ksub1_, g_n_ksub2_);
     
     // 计算a_gc_k-1/2
     auto double_omega_ie_n_mid = omega_ie_n_mid;
@@ -218,15 +224,53 @@ void SinsMechanization::VelocityUpdate()
         a_zeta *= delta_t_;
     
     // 计算比力积分项
+    auto antisymmetry = BaseMatrix::CalcAntisymmetryMat(zeta_nksub1_nk)*0.5;
+    auto delta_v_fk_n =
+            (BaseMatrix::eye(3) - antisymmetry)*ksub1_state_.c_b_n*
+            mat_delta_v_fk_bksub1;
     
-    
+    // 速度更新
+    auto sum_f_gcor = BaseMatrix::VectorAdd(delta_v_fk_n.get_mat(),
+                                            delta_v_g_n);  // 哥氏重力积分项和比力积分项的和
+    cur_state_.v_ned = BaseMatrix::VectorAdd(ksub1_state_.v_ned, sum_f_gcor);
 }
 
+/**@brief       位置更新
+ * @details
+ * - 已知: 上一历元位置BLH、上一历元和当前历元的速度\n
+ * - 待求: 当前历元位置BLH
+ * @author      Zing Fong
+ * @date        2022/6/14
+ */
 void SinsMechanization::PositionUpdate()
 {
-
+    // 高程更新
+    cur_state_.blh[2] = ksub1_state_.blh[2]
+                        - 0.5*(ksub1_state_.v_ned[3] + cur_state_.v_ned[3])*
+                          delta_t_;
+    // 纬度更新
+    double h_bar = 0.5*(cur_state_.blh[2] + ksub1_state_.blh[2]);  // 积分周期内平均高程
+    cur_state_.blh[0] = ksub1_state_.blh[0] +
+                        (cur_state_.v_ned[0] + ksub1_state_.v_ned[0])/
+                        (2*(r_m_ksub1_ + h_bar))*delta_t_;
+    // 经度更新
+    double r_n_mid = 0.5*(r_n_ + r_n_ksub1_);  // 中间时刻Rn
+    double phi_bar = 0.5*(cur_state_.blh[0] + ksub1_state_.blh[0]);  // 中间时刻纬度
+    cur_state_.blh[1] = ksub1_state_.blh[1] +
+                        (cur_state_.v_ned[1] + cur_state_.v_ned[1])/
+                        (2*(r_n_mid + h_bar)*cos(phi_bar))*delta_t_;
+    
+    // 更新xyz
+    cur_state_.xyz = BaseMath::Blh2Xyz(cur_state_.blh);
 }
 
+/**@brief       一个历元的惯导机械编排
+ * @details
+ * - 已知: 上一历元位置BLH、上一历元和当前历元的速度\n
+ * - 待求: 当前历元位置BLH
+ * @author      Zing Fong
+ * @date        2022/6/14
+ */
 int SinsMechanization::ImuMechanization(const ImuData &imu_data)
 {
     return 0;

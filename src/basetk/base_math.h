@@ -35,6 +35,7 @@
  * <tr><td>2022/5/27    <td>Zing Fong   <td>Initialize
  * <tr><td>2022/6/10    <td>Zing Fong   <td>将max和min函数的参数类型更改为vector
  * <tr><td>2022/6/12    <td>Zing Fong   <td>增加了计算n系重力加速度矢量的函数
+ * <tr><td>2022/6/14    <td>Zing Fong   <td>增加了NED系和ENU系相互转换的函数
  * </table>
  */
 class BaseMath
@@ -49,13 +50,16 @@ class BaseMath
     static std::vector<double> XyzSub(const std::vector<double> &minuend,
                                       const std::vector<double> &subtrahend);  // 地心地固坐标减法
     static std::vector<double> Blh2Xyz(const std::vector<double> &blh,
-                                       CoorSys coor_sys);  // 大地坐标转地心地固坐标
+                                       CoorSys coor_sys = BaseSdc::wgs84);  // 大地坐标转地心地固坐标
     static std::vector<double> Xyz2Blh(const std::vector<double> &xyz,
-                                       CoorSys coor_sys);  // 地心地固坐标转大地坐标
+                                       CoorSys coor_sys = BaseSdc::wgs84);  // 地心地固坐标转大地坐标
     static double Deg2Rad(const int &deg,
                           const int &min, const double &sec);  // 度分秒转弧度
-    static std::vector<double> Ecef2Enu(const std::vector<double> &ref_xyz,
+    static std::vector<double> CalcDenu(const std::vector<double> &ref_xyz,
                                         const std::vector<double> &station_xyz);  // 计算测站在参考坐标下的ENU坐标(误差)
+    static std::vector<double> Ned2Enu(const std::vector<double> &ned);  // NED转ENU
+    static std::vector<double> Enu2Ned(const std::vector<double> &enu);  // ENU转NED
+    
     
     // 四元数相关运算
     static std::vector<double> QuaternionMul(
