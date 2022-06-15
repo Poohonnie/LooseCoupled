@@ -26,14 +26,40 @@
 #include "../basetk/base_math.h"
 #include "../basetk/base_time.h"
 #include "../basetk/base_app.h"
+#include "../gnsstk/gnss_pos.h"
 #include "sins_file_stream.h"
 #include "sins_mechanization.h"
 
 // TODO: 完成松组合算法设计
 class SinsLooseCoupled
 {
-
-
+  public:
+  
+    void Predict(const ImuData &imu_data);  // 一步预测
+    void Update(const ImuData &imu_data, const StateInfo &gnss_state);  // 测量更新(在有GPS输入的情况下)
+    
+  private:
+    BaseMatrix CalcF();  // 计算F矩阵
+    BaseMatrix CalcFrr();  // 计算Frr矩阵
+    BaseMatrix CalcFvr();  // 计算Fvr矩阵
+    BaseMatrix CalcFphir();  // 计算Fφr矩阵
+    BaseMatrix CalcFvv();  // 计算Fvv矩阵
+    BaseMatrix CalcFphiv();  // 计算Fφv矩阵
+    
+    SinsMechanization sins_mechanization_{};  // 机械编排对象, 包含位置、速度、姿态等信息
+    
+    BaseMatrix x_k_{};  // k时刻系统状态
+    
+    BaseMatrix x_k_ksub1{};  // 一步预测状态
+    BaseMatrix p_k_ksub1_{};  // 一步预测协方差阵
+    
+    BaseMatrix K_k_{};  // 增益矩阵
+    
+    
+    BaseMatrix phi_k_ksub1_{};  // 离散形式状态转移矩阵
+    BaseMatrix G_{};  // 不知道啥
+    BaseMatrix Q_{};  // 协因数阵
+    BaseMatrix P_{};  // 协方差阵
 };
 
 

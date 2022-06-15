@@ -47,6 +47,7 @@ class GnssPos
   private:
     double t_{};  // GPS周秒
     std::vector<double> pos_ = std::vector<double>(3, 0.0);  // 当前历元的位置
+    std::vector<double> v_ = std::vector<double>(3, 0.0);  // 当前历元速度
     
     FILE *file_ptr_{};  // 文件指针
 };

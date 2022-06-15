@@ -233,6 +233,7 @@ void SinsMechanization::VelocityUpdate()
     auto sum_f_gcor = BaseMatrix::VectorAdd(delta_v_fk_n.get_mat(),
                                             delta_v_g_n);  // 哥氏重力积分项和比力积分项的和
     cur_state_.v_ned = BaseMatrix::VectorAdd(ksub1_state_.v_ned, sum_f_gcor);
+    cur_state_.v_enu = BaseMath::Ned2Enu(cur_state_.v_ned);
 }
 
 /**@brief       位置更新
@@ -273,6 +274,12 @@ void SinsMechanization::PositionUpdate()
  */
 int SinsMechanization::ImuMechanization(const ImuData &imu_data)
 {
+    if(PrepareUpdate(imu_data) != 0)
+        return 0;  // 第一个历元, 不进行机械编排
+    AttitudeUpdate();  // 姿态更新
+    VelocityUpdate();  // 速度更新
+    PositionUpdate();  // 位置更新
+    
     return 0;
 }
 

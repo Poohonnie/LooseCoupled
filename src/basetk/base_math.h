@@ -59,7 +59,8 @@ class BaseMath
                                         const std::vector<double> &station_xyz);  // 计算测站在参考坐标下的ENU坐标(误差)
     static std::vector<double> Ned2Enu(const std::vector<double> &ned);  // NED转ENU
     static std::vector<double> Enu2Ned(const std::vector<double> &enu);  // ENU转NED
-    
+    static std::vector<double> Enu2Ecef(const std::vector<double> &ref_xyz,
+                                        const std::vector<double> &enu);  // ENU系下某个向量转ECEF系
     
     // 四元数相关运算
     static std::vector<double> QuaternionMul(

@@ -65,7 +65,7 @@ class SinsFileStream
   private:
     FILE *file_ptr_{};  // imu文件指针
     GpsTime time_{};  // 时间
-    ImuData raw_data_{};  // imu原始数据 右前上b系
+    ImuData raw_data_{};  // imu原始数据 b系右前上(ENU)
     
 };
 

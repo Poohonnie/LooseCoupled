@@ -44,6 +44,7 @@ struct StateInfo
     BaseMatrix c_b_n = BaseMatrix(3, 3);  // 姿态方向余弦矩阵
     std::vector<double> v_ecef = std::vector<double>(3, 0.0);  // ECEF系下的速度
     std::vector<double> v_ned = std::vector<double>(3, 0.0);  // n系下的速度(NED)
+    std::vector<double> v_enu = std::vector<double>(3, 0.0);  // ENU系下的速度
     std::vector<double> xyz = std::vector<double>(3, 0.0);  // ECEF系下的位置
     std::vector<double> blh = std::vector<double>(3, 0.0);  // 大地坐标
 };

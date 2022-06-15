@@ -266,6 +266,58 @@ std::vector<double> BaseMath::Enu2Ned(const std::vector<double> &enu)
     return ned;
 }
 
+/**@brief       ENU系下某个向量转ECEF系
+ * @note        未完成, 暂时不可使用
+ * @param[in]   ref_xyz         参考坐标, 即载体的ECEF坐标
+ * @param[in]   enu             ENU方向向量
+ * @return      转换后ECEF系下的向量xyz
+ * @author      Zing Fong
+ * @date        2022/6/15
+ */
+std::vector<double> BaseMath::Enu2Ecef(const std::vector<double> &ref_xyz,
+                                       const std::vector<double> &enu)
+{
+    if(ref_xyz.size() != 3 || enu.size() != 3)
+    {
+        // 输入格式错误
+        printf("Enu2Ecef error!");
+        return std::vector<double>(3, 0.0);
+    }
+    const double &D2R = BaseSdc::kD2R;  // 角度转弧度
+    
+    std::vector<double> ref_blh = Xyz2Blh(ref_xyz);
+    std::vector<double> homo_new_xyz(4, 0.0);  // 新向量的齐次坐标
+    std::vector<double> homo_neu(4, 0.0);  // ENU方向向量的齐次坐标
+    homo_neu[0] = enu[1], homo_neu[1] = enu[0], homo_neu[2] = enu[2];
+    
+    double b{}, l{}, h{};  // 大地坐标
+    BaseMatrix tmp(4, 4);
+    BaseMatrix R(4, 4);
+    int i = 0;
+    
+    // 平移
+    std::vector<double> t(16, 0.0);
+    t[0] = t[5] = t[10] = t[15] = 1.0;
+    t[3] = ref_xyz[0];
+    t[7] = ref_xyz[1];
+    t[11] = ref_xyz[2];
+    BaseMatrix T(t, 4, 4);
+    
+    // 旋转R
+    do
+    {
+        b = ref_blh[0] + 0.000005*D2R;
+        l = ref_blh[1] + 0.000005*D2R;
+        h = ref_blh[2];
+        std::vector<double> r(16, 0.0);  // 旋转矩阵R
+
+    } while(fabs(ref_blh[0] - b) > 1e-8*D2R &&
+            fabs(ref_blh[1] - l) > 1e-8*D2R && fabs(ref_blh[2] - h) > 1e-8*D2R);
+    
+    
+    return std::vector<double>();
+}
+
 /**@brief       四元数乘法
  * @param[in]   quaternion1             乘数1
  * @param[in]   quaternion1             乘数2
@@ -722,10 +774,10 @@ std::vector<double> BaseMath::CalcGn(const std::vector<double> &blh)
     double m = omega_e*omega_e*a*a*b/gm;
     
     double g_phi = (a*g_a*cos(B)*cos(B) + b*g_b*sin(B)*sin(B))/
-            sqrt(a*a*cos(B)*cos(B) + b*b*sin(B)*sin(B));
+                   sqrt(a*a*cos(B)*cos(B) + b*b*sin(B)*sin(B));
     double g = g_phi*(1 - 2.0/a*(1 + f + m - 2*f*sin(B)*sin(B))*H +
-            3.0/(a*a)*H*H);
+                      3.0/(a*a)*H*H);
     std::vector<double> g_n = {0.0, 0.0, g};
     return g_n;
-
+    
 }
