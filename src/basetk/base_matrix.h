@@ -35,6 +35,7 @@
  * <tr><td>2022/6/5     <td>Zing Fong   <td>加入了矩阵求迹函数
  * <tr><td>2022/6/9     <td>Zing Fong   <td>增加了三维列向量叉乘函数
  * <tr><td>2022/6/12    <td>Zing Fong   <td>增加了向量加减法
+ * <tr><td>2022/6/18    <td>Zing Fong   <td>增加了向量求对角阵函数
  * </table>
  */
 class BaseMatrix
@@ -56,6 +57,7 @@ class BaseMatrix
                                          const std::vector<double> &vec2);  // 向量加法
     static std::vector<double> VectorSub(const std::vector<double> &vec1,
                                 const std::vector<double> &vec2);  // 向量减法
+    static BaseMatrix Diag(const std::vector<double> &vec);  // 向量求对角阵
     
     
     void disp(int width = 9, int precise = 4) const;  // 按照位宽和精度显示矩阵

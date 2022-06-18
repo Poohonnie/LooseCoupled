@@ -24,9 +24,6 @@
 
 // 本项目内 .h 文件
 
-//constexpr int
-
-
 /**@brief       状态初始化
  * @param[in]   initial_state          载体的初始状态量
  * @author      Zing Fong
@@ -265,6 +262,23 @@ void SinsMechanization::PositionUpdate()
     cur_state_.xyz = BaseMath::Blh2Xyz(cur_state_.blh);
 }
 
+/**@brief       线性外推
+ * @param[in]   ksub1       k-1历元某一矢量
+ * @param[in]   ksub2       k-2历元某一矢量
+ * @return      线性外推k-1/2历元结果
+ * @author      Zing Fong
+ * @date        2022/6/13
+ */
+std::vector<double> SinsMechanization::LinearExtrapolation(
+        std::vector<double> &ksub1, std::vector<double> &ksub2)
+{
+    auto tmp = BaseMatrix::VectorSub(ksub1, ksub2);
+    for(auto &a_tmp: tmp)
+        a_tmp /= 2.0;  // 除以2
+    auto ksubhalf = BaseMatrix::VectorAdd(ksub1, tmp);
+    return ksubhalf;
+}
+
 /**@brief       一个历元的惯导机械编排
  * @details
  * - 已知: 上一历元位置BLH、上一历元和当前历元的速度\n
@@ -288,24 +302,42 @@ double SinsMechanization::get_t() const
     return t_;
 }
 
+double SinsMechanization::get_delta_t() const
+{
+    return delta_t_;
+}
+
 StateInfo SinsMechanization::get_cur_state() const
 {
     return cur_state_;
 }
 
-/**@brief       线性外推
- * @param[in]   ksub1       k-1历元某一矢量
- * @param[in]   ksub2       k-2历元某一矢量
- * @return      线性外推k-1/2历元结果
- * @author      Zing Fong
- * @date        2022/6/13
- */
-std::vector<double> SinsMechanization::LinearExtrapolation(
-        std::vector<double> &ksub1, std::vector<double> &ksub2)
+double SinsMechanization::get_r_m() const
 {
-    auto tmp = BaseMatrix::VectorSub(ksub1, ksub2);
-    for(auto &a_tmp: tmp)
-        a_tmp /= 2.0;  // 除以2
-    auto ksubhalf = BaseMatrix::VectorAdd(ksub1, tmp);
-    return ksubhalf;
+    return r_m_;
+}
+
+double SinsMechanization::get_r_n() const
+{
+    return r_n_;
+}
+
+std::vector<double> SinsMechanization::get_g_n() const
+{
+    return g_n_;
+}
+
+std::vector<double> SinsMechanization::get_omega_ie_n() const
+{
+    return omega_ie_n_;
+}
+
+std::vector<double> SinsMechanization::get_omega_en_n() const
+{
+    return omega_en_n_;
+}
+
+std::vector<double> SinsMechanization::get_omega_in_n() const
+{
+    return BaseMatrix::VectorAdd(omega_ie_n_, omega_en_n_);
 }

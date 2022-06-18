@@ -65,10 +65,17 @@ class SinsMechanization
     
     void Init(const StateInfo &initial_state);  // 状态初始化
     int ImuMechanization(const ImuData &imu_data);  // 进行一次机械编排
-  
+    
     // get
     double get_t() const;
+    double get_delta_t() const;
     StateInfo get_cur_state() const;
+    double get_r_m() const;
+    double get_r_n() const;
+    std::vector<double> get_g_n() const;
+    std::vector<double> get_omega_ie_n() const;
+    std::vector<double> get_omega_en_n() const;
+    std::vector<double> get_omega_in_n() const;
   
   private:
     int PrepareUpdate(const ImuData &imu_data);  // 更新前准备, 将惯性传感器数据存储起来
@@ -87,16 +94,22 @@ class SinsMechanization
     double r_n_ksub1_{};  // k-1时刻卯酉圈半径
     
     std::vector<double> g_n_ = std::vector<double>(3, 0.0);  // n系下的重力加速度
-    std::vector<double> g_n_ksub1_ = std::vector<double>(3, 0.0);  // k-1时刻n系下的重力加速度
-    std::vector<double> g_n_ksub2_ = std::vector<double>(3, 0.0);  // k-2时刻n系下的重力加速度
+    std::vector<double> g_n_ksub1_ = std::vector<double>(3,
+                                                         0.0);  // k-1时刻n系下的重力加速度
+    std::vector<double> g_n_ksub2_ = std::vector<double>(3,
+                                                         0.0);  // k-2时刻n系下的重力加速度
     
-    std::vector<double> omega_ie_n_ = std::vector<double>(3, 0.0);  // e系下的地球自转角速度
+    std::vector<double> omega_ie_n_ = std::vector<double>(3,
+                                                          0.0);  // e系下的地球自转角速度
     std::vector<double> omega_en_n_ = std::vector<double>(3, 0.0);
-    std::vector<double> omega_ie_n_ksub1_ = std::vector<double>(3, 0.0);  // k-1时刻e系下的地球自转角速度
-    std::vector<double> omega_en_n_ksub1_ = std::vector<double>(3, 0.0);  // k-1时刻的内个, 具体名字我也不知道
-    std::vector<double> omega_ie_n_ksub2_ = std::vector<double>(3, 0.0);  // k-2时刻e系下的地球自转角速度
-    std::vector<double> omega_en_n_ksub2_ = std::vector<double>(3, 0.0);  // k-2时刻的内个, 具体名字我也不知道
-    
+    std::vector<double> omega_ie_n_ksub1_ = std::vector<double>(3,
+                                                                0.0);  // k-1时刻e系下的地球自转角速度
+    std::vector<double> omega_en_n_ksub1_ = std::vector<double>(3,
+                                                                0.0);  // k-1时刻的内个, 具体名字我也不知道
+    std::vector<double> omega_ie_n_ksub2_ = std::vector<double>(3,
+                                                                0.0);  // k-2时刻e系下的地球自转角速度
+    std::vector<double> omega_en_n_ksub2_ = std::vector<double>(3,
+                                                                0.0);  // k-2时刻的内个, 具体名字我也不知道
     
     StateInfo cur_state_{};  // 当前时刻位姿状态信息
     StateInfo ksub1_state_{};  // k-1时刻位姿信息

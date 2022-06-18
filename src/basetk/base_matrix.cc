@@ -232,6 +232,21 @@ std::vector<double> BaseMatrix::VectorSub(const std::vector<double> &vec1,
     return result;
 }
 
+/**@brief           向量求对角阵
+ * @param[in]       vec            输入的向量
+ * @return          以该向量为主对角线元素的对角阵
+ * @author          Zing Fong
+ * @date            2022/6/18
+ */
+BaseMatrix BaseMatrix::Diag(const std::vector<double> &vec)
+{
+    auto size = vec.size();
+    BaseMatrix diag(size, size);
+    for(int i = 0; i < size; ++i)
+        diag.write(i, i, vec[i]);
+    
+    return diag;
+}
 
 /**@brief           矩阵显示函数
  * @param[in]       width            输出位宽, 默认为9
